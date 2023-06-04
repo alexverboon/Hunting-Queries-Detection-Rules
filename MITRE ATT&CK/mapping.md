@@ -30,6 +30,7 @@ This section only includes references to queries that can be mapped in the MITRE
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
 | T1564.004 | Hide Artifacts: NTFS File Attributes | [NTFS File Attributes - alternate data streams](../Defender%20for%20Endpoint/MDE-NTFS%20File%20Attributes%20-%20alternate%20data%20streams.md) |
+| T1484.001 | Domain Policy Modification: Group Policy Modification | [AD Group Policy changes on devices](../Defender%20For%20Endpoint/MDE-GroupPolicyModificationEvents.md) |
 
 ## Credential Access
 

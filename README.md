@@ -30,4 +30,4 @@ The queries in this repository are split into different categories. The MITRE AT
 - [Defender For Office 365](./Defender%20For%20Office%20365/)
 - [Azure Active Directory](./Azure%20Active%20Directory)
 - [Microsoft Sentinel](./Sentinel)
-
+- [Defender External Attack Surface Management](./Defender%20External%20Attack%20Surface%20Management/)

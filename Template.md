@@ -12,7 +12,6 @@
 
 DESCRIPTION
 
-Query Source: Microsoft
 
 #### References
 
@@ -23,6 +22,6 @@ Query Source: Microsoft
 
 
 
-```Kusto
+```kql
 ```
 
