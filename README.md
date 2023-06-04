@@ -5,7 +5,6 @@ The purpose of this repository is to share KQL queries that can be used by anyon
 
 **Presenting this material as your own is illegal and forbidden. A reference to Twitter [@AlexVerboon](https://twitter.com/alexverboon) or Github [AlexVerboon](https://github.com/alexverboon/Hunting-Queries-Detection-Rules) is much appriciated when sharing or using the content.**
 
-
 # Credits
 
 [@BertJanCyber](https://twitter.com/BertJanCyber) - The content structure of this repository was adopted from [Bert-Jan's KQL repository](https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules)
@@ -23,6 +22,7 @@ The queries in this repository are split into different categories. The MITRE AT
 - [MITRE ATT&CK Mapping](./MITRE%20ATT%26CK/)
 
 ## Products
+
 - [Defender 365 rules](./Defender%20365/)
 - [Defender For Endpoint detection rules](./Defender%20for%20Endpoint/)
 - [Defender For Identity detection rules](./Defender%20For%20Identity)
