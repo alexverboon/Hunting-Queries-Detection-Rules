@@ -20,7 +20,6 @@ Query Source: Microsoft
 
 ### Microsoft 365 Defender
 
-```kql
 
 Use this query to identify password spray activity.
 
