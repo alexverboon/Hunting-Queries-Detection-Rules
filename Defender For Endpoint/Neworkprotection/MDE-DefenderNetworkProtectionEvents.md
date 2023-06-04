@@ -6,14 +6,11 @@
 
 Use the below queries to retrieve network protection events
 
-
 #### References
 
 - [Protect your network](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
 
-
 ### Microsoft 365 Defender
-
 
 ```kql
 DeviceEvents 
@@ -51,19 +48,17 @@ DeviceEvents
 | project Timestamp, DeviceName,IsAudit, ResponseCategory, Uri
 ```
 
+Defender Network Protection
 
-
-Defender Network Protection 
-
-```
+```kql
 DeviceEvents
 | where ActionType in ('ExploitGuardNetworkProtectionAudited','ExploitGuardNetworkProtectionBlocked')
 | distinct ActionType,InitiatingProcessFileName, RemoteUrl
 ```
 
-Defender SmartScreen 
+Defender SmartScreen
 
-```
+```kql
 DeviceEvents
 | where ActionType in ("SmartScreenUrlWarning","SmartScreenUserOverride")
 | distinct ActionType,InitiatingProcessFileName, RemoteUrl
@@ -71,18 +66,16 @@ DeviceEvents
 
 Defender SmartScreen  and Network Protection
 
-```
+```kql
 DeviceEvents
 | where ActionType in ("SmartScreenUrlWarning","SmartScreenUserOverride","ExploitGuardNetworkProtectionAudited","ExploitGuardNetworkProtectionBlocked")
 | distinct ActionType,InitiatingProcessFileName, RemoteUrl
 
-
-
-
+```
 
 Defender SmartScreen  and Network Protection
 
-```
+```kql
 DeviceEvents
 | where ActionType in ("SmartScreenUrlWarning","SmartScreenUserOverride","ExploitGuardNetworkProtectionAudited","ExploitGuardNetworkProtectionBlocked")
  | distinct ActionType, AdditionalFields, RemoteUrl
@@ -100,8 +93,7 @@ DeviceEvents
 | extend UserSid = parse_json(data).UserSid
 ```
 
-
-```
+```kql
 AlertInfo
 | join 
 AlertEvidence

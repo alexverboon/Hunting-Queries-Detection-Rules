@@ -6,14 +6,13 @@
 
 Use the below queries to find Windows Defender file removal and quarantine actions
 
-
 #### References
 
 ### Microsoft 365 Defender
 
 Malicious file detected and removed during file download scan
 
-```Kusto
+```kql
 DeviceEvents
 | where ActionType == @"OtherAlertRelatedActivity"
 | project Timestamp, DeviceName, AdditionalFields, FileName, FolderPath, SHA1
@@ -27,7 +26,7 @@ DeviceEvents
 
 Malicious file detected and quarantined
 
-```
+```kql
 DeviceEvents
 | where ActionType == @"OtherAlertRelatedActivity"
 | project Timestamp, DeviceName, AdditionalFields, FileName, FolderPath, SHA1
@@ -41,7 +40,7 @@ DeviceEvents
 
 Defender detections
 
-```
+```kql
 DeviceEvents
 | where ActionType == "AntivirusDetection"
 | extend event = parse_json(AdditionalFields)
@@ -51,5 +50,3 @@ DeviceEvents
 | extend ReportSource = event.ReportSource
 | project Timestamp, DeviceName, event, Threat, WasRemediated, Action, ReportSource, FileName
 ```
-
-
