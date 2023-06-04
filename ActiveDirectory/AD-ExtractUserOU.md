@@ -1,7 +1,6 @@
-# Active Directory - Extract Account OU 
+# Active Directory - Extract Account OU
 
 ## Query Information
-
 
 ### Description
 
@@ -9,17 +8,17 @@ Use the below query example to extract the Accounts AD organizational unit from 
 
 First we define the regex pattern
 
-```
+```kql
 let OUPattern = @"^(CN=[^,]+,)?(.+)$";
 ```
+
 and then use this regex to extract the OU
 
-```
+```kql
 | extend OU = extract(OUPattern, 2, OnPremisesDistinguishedName)
 ```
 
 #### References
-
 
 ### Microsoft Sentinel
 
@@ -35,8 +34,3 @@ IdentityInfo
 //| summarize count() by OU
 
 ```
-
-
-
-
-
