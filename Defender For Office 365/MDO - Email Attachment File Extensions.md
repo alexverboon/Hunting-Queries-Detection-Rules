@@ -6,20 +6,17 @@
 
 Use the below queries to retireve information about email attachment formats / legacy formats. 
 
-
 #### References
-
 
 #### Credits
 
 thanks to [Gianni](https://twitter.com/castello_johnny) for the dotcount method to identify the file extension
 
-
 ### Microsoft 365 Defender
 
 Email attachment file extension overview
 
-```
+```kql
 EmailEvents
 | join EmailAttachmentInfo
 on $left. NetworkMessageId ==  $right.NetworkMessageId
@@ -34,7 +31,7 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 
 Email attachment file extension details
 
-```Kusto
+```kql
 let FileExt = ".ISO";
 EmailEvents
 | join EmailAttachmentInfo
@@ -49,7 +46,7 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 
 legacy office file formats
 
-```Kusto
+```kql
 let legacyofficeformats = dynamic([".doc",".dot",".ppt",".pot",".ppa","pps",".xls",".xla",".xlt",".xlw",".mdb"]);
 EmailEvents
 | join EmailAttachmentInfo
@@ -65,7 +62,7 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 
 legacy office file formats
 
-```
+```kql
 let legacyofficeformats = dynamic([".doc",".dot",".ppt",".pot",".ppa","pps",".xls",".xla",".xlt",".xlw",".mdb"]);
 EmailEvents
 | join EmailAttachmentInfo
@@ -78,10 +75,9 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 | project Timestamp, FileName, FileExtension, FileType, DotCount, EmailDirection, ThreatTypes, NetworkMessageId
 ```
 
-
 Email attachment file extension details
 
-```
+```kql
 let legacyofficeformats = dynamic([".doc",".dot",".ppt",".pot",".ppa","pps",".xls",".xla",".xlt",".xlw",".mdb"]);
 EmailEvents
 | join EmailAttachmentInfo
@@ -99,7 +95,7 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 
 Email attachment file extension details
 
-```
+```kql
 let legacyofficeformats = dynamic([".doc",".dot",".ppt",".pot",".ppa","pps",".xls",".xla",".xlt",".xlw",".mdb"]);
 EmailEvents
 | join EmailAttachmentInfo
@@ -116,7 +112,7 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 
 file formats blocked configured in policy
 
-```
+```kql
 let legacyofficeformats = dynamic([".ace",".ani",".app",".docm",".exe","jar",".reg",".scr",".vbe",".vbs"]);
 EmailEvents
 | join EmailAttachmentInfo
@@ -131,10 +127,9 @@ on $left. NetworkMessageId ==  $right.NetworkMessageId
 // | render piechart 
 ```
 
-
  legacy files on sharepoint , onedrive
 
-```
+```kql
 let legacyofficeformats = dynamic([".doc",".dot",".ppt",".pot",".ppa","pps",".xls",".xla",".xlt",".xlw",".mdb"]);
 CloudAppEvents
 | where ActionType startswith "File"
@@ -149,7 +144,7 @@ CloudAppEvents
 
 Device File Creation events
 
-```
+```kql
 let legacyofficeformats = dynamic(["doc","dot","ppt","pot","ppa","pps","xls","xla","xlt","xlw","mdb"]);
 DeviceFileEvents
 | extend FileInfo = parse_path(FolderPath)
@@ -163,7 +158,7 @@ DeviceFileEvents
 // filter results - only office apps
 // Device File Creation events
 
-```
+```kql
 let legacyofficeformats = dynamic(["doc","dot","ppt","pot","ppa","pps","xls","xla","xlt","xlw","mdb"]);
 let officeapps = dynamic(["WINWORD.EXE","EXCEL.EXE","POWERPNT.EXE"]);
 DeviceFileEvents
@@ -178,4 +173,3 @@ DeviceFileEvents
 | where InitiatingProcessFileName != @"msiexec.exe"| where InitiatingProcessFileName != @"explorer.exe"
 | where InitiatingProcessFileName in (officeapps)
 ```
-

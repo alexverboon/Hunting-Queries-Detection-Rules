@@ -2,20 +2,13 @@
 
 ## Query Information
 
-
 ### Description
 
 Use the below queries to identify Azure Active Directory sign-ins with Azure Active Directory PowerShell or Microsoft Exchange Online Remote PowerShell
 
-
 #### References
 
-
-
 ### Microsoft 365 Defender
-
-
-
 
 ```kql
 let timeframe = 90d;
@@ -32,6 +25,3 @@ SigninLogs
 | extend succeeded = tostring(parse_json(AuthenticationDetails)[0].succeeded)
 | project TimeGenerated,authenticationMethod,authenticationStepDateTime,succeeded, Identity, AlternateSignInName, AppDisplayName, AppId,IPAddress, DeviceOS, Browser,Location, City, ResultType, ResultDescription
 ```
-
-
-

@@ -6,17 +6,14 @@
 
 Use the below queries to retreieve details about Device Discovery
 
-
 #### References
 
 - [Device Deiscovery overview](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/device-discovery?view=o365-worldwide)
 - [SeenBy function](https://learn.microsoft.com/en-us/microsoft-365/security/defender/advanced-hunting-seenby-function?view=o365-worldwide)
 
-
 ### Microsoft 365 Defender
 
-
-```Kusto
+```kql
 // Device Discovery - what onboarded device discovered the not onboarded Endpoint Device
 let AllOnboardedDevices = DeviceInfo
 | where Timestamp > ago (30d)
@@ -44,8 +41,7 @@ on $left.SeenDeviceId == $right.DiscoveryDeviceId
 | project-away SeenDeviceId
 ```
 
-
-```Kusto
+```kql
 // Device Discovery - what onboarded device discovered the IoT and Network devices
 let AllOnboardedDevices = DeviceInfo
 | where Timestamp > ago (30d)
@@ -71,4 +67,3 @@ DeviceInfo
 on $left.SeenDeviceId == $right.DiscoveryDeviceId 
 | project-away SeenDeviceId
 ```
-

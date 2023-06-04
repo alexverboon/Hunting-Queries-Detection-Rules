@@ -10,12 +10,11 @@ Run the below queries to retrieve information about MDE Troublshooting mode stat
 
 - [Get started with troubleshooting mode in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/enable-troubleshooting-mode?view=o365-worldwide)
 
-
 ### Microsoft 365 Defender
 
 Search by deviceId or deviceName by commenting out the respective lines.
 
-```Kusto
+```kql
 //let deviceName = "<deviceName>";   // update with device name
 let deviceId = "<deviceID>";   // update with device id
 DeviceEvents
@@ -31,8 +30,7 @@ DeviceEvents
 
 Devices currently in troubleshooting mode
 
-
-```Kusto
+```kql
 DeviceEvents
 | where Timestamp > ago(3h) // troubleshooting mode automatically disables after 3 hours 
 | where ActionType == "AntivirusTroubleshootModeEvent"
@@ -44,7 +42,7 @@ DeviceEvents
 
 Count of troubleshooting mode instances by device
 
-```Kusto
+```kql
 DeviceEvents
 | where ActionType == "AntivirusTroubleshootModeEvent"
 | extend _tsmodeproperties = parse_json(AdditionalFields)
@@ -56,8 +54,7 @@ DeviceEvents
 
 Total count
 
-
-```Kusto
+```kql
 DeviceEvents
 | where ActionType == "AntivirusTroubleshootModeEvent"
 | extend _tsmodeproperties = parse_json(AdditionalFields)
@@ -67,4 +64,3 @@ DeviceEvents
 | summarize (Timestamp, ReportId)=arg_max(Timestamp, ReportId), count()
 | where count_ > 5          // choose your max # of TS mode instances for your time range
 ```
-

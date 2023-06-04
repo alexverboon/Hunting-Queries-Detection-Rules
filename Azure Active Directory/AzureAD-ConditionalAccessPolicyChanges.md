@@ -6,8 +6,7 @@
 
 This query provides a simple overview of Conditional Access policy changes
 
-
-```
+```kql
 AuditLogs
 | where OperationName has_any("conditional access policy")
 | project

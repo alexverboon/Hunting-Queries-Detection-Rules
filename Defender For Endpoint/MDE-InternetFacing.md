@@ -6,19 +6,14 @@
 
 Use the below queries to gather inforamtion about internet facing devcies
 
-
 #### References
 
 - [Discovering internet-facing devices using Microsoft Defender for Endpoint](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/discovering-internet-facing-devices-using-microsoft-defender-for/ba-p/3778975)
 
-
-
 ### Microsoft 365 Defender
 
-
-```Kusto
+```kql
 // query source: Microsoft
-
 DeviceInfo 
 | where Timestamp > ago(7d) 
 | where IsInternetFacing 
@@ -27,8 +22,7 @@ DeviceInfo
 | summarize arg_max(Timestamp, *) by DeviceId
 ```
 
-
-```Kusto
+```kql
 // SMB
 DeviceInfo 
 | where Timestamp > ago(7d) 

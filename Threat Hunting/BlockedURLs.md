@@ -1,16 +1,12 @@
 # Blocked URLs
 
-
 ## Query Information
-
 
 ### Description
 
 Use the below querys to find the domains of URLs that were blocked
 
-
 ### Defender for Endpoint / Sentinel
-
 
 ```kql
 UrlClickEvents
@@ -22,7 +18,7 @@ UrlClickEvents
 | project TimeGenerated, TLD, Domain,IPAddress, ThreatTypes,DetectionMethods, IsClickedThrough,Url
 ```
 
-```
+```kql
 EmailEvents
 | where DeliveryAction == "Blocked"
 | where DetectionMethods has_any ("URL","domain")

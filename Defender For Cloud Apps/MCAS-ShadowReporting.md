@@ -4,19 +4,21 @@
 
 ### Description
 
+Use the below queries to reretrieve Defender for Cloud Apps - shadow discovery information. The first query represents the information as shown in the portal. The second query shows the information per user.
+
+> Note that the data in the online portal is refreshed periodically, meaning that you might get different results when running the below queries.
 
 #### References
 
-
 #### Credits
-Kim Oppalfens - @TheWMIGuy
 
+Kim Oppalfens - @TheWMIGuy
 
 ### Microsoft Sentinel
 
 MCAS Shadown Reporting details by Application
 
-```Kusto
+```kql
 McasShadowItReporting
 | where TimeGenerated > ago (90d)
 | where StreamName == "Win10 Endpoint Users"
@@ -32,7 +34,7 @@ McasShadowItReporting
 
 MCAS Shadown Reporting details by User
 
-```Kusto
+```kql
 McasShadowItReporting
 | where TimeGenerated > ago (90d)
 | where StreamName == "Win10 Endpoint Users"
@@ -47,10 +49,3 @@ McasShadowItReporting
 | project EnrichedUserName, TotalDevices, TotalIPAddresses, Totalusers,TotalApps, TotalTraffic, UploadMB, DownloadMB, IPAddresses, Devices, Users, Apps
 
 ```
-
-
-
-
-## Contributor info
-
-**Contributor:** Alex Verboon, Kim Oppalfens - @TheWMIGuy

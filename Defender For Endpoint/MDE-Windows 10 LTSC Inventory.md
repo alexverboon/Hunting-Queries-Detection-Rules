@@ -1,12 +1,10 @@
 # Defender for Endpoint - Device Inventory - Windows LTSC devices
 
-
 ## Query Information
 
 ### Description
 
 Use the below queries to identify Windows 10 LTSC devices within your MDE inventory
-
 
 #### References
 
@@ -14,12 +12,11 @@ Use the below queries to identify Windows 10 LTSC devices within your MDE invent
 
 - [Windows 10 Enterprise LTSC](https://learn.microsoft.com/en-us/windows/whats-new/ltsc/)
 
-
 ### Defender 365
 
 We now have information within the DeviceTvmInfoGathering table about ltsc
 
-```Kusto
+```kql
 DeviceTvmInfoGathering
 | extend AF = parse_json(AdditionalFields)
 | evaluate bag_unpack(AF)
@@ -28,7 +25,7 @@ DeviceTvmInfoGathering
 
 All Windows 10 devices running ltsc and sac, filter on IsLtsc true/false when you just want to see the ltsc/sac devices. 
 
-```Kusto
+```kql
 let ltscdevices = DeviceTvmInfoGathering
     | summarize arg_max(Timestamp, *) by DeviceId
     | extend LtscDeviceId = DeviceId

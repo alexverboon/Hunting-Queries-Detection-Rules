@@ -8,13 +8,11 @@ Use the below queires to retrieve device inventory information of discovered Net
 
 ### References
 
-
 ### Microsoft 365 Defender
-
 
 IoT Device Inventory
 
-```Kusto
+```kql
 // IoT Device Inventory
 DeviceInfo
 | where DeviceCategory == @"IoT"
@@ -32,7 +30,7 @@ DeviceInfo
 
 Network Device Inventory
 
-```kusto
+```kql
 // Network Device Inventory
 DeviceInfo
 | where DeviceCategory == @"NetworkDevice"
@@ -47,5 +45,3 @@ DeviceInfo
 | project Timestamp, DeviceId, DeviceName, DeviceType, DeviceSubtype, IPAddress, MacAddress, Model, Vendor, OSPlatform, OSVersion, OSDistribution
 //| summarize count() by DeviceType, DeviceSubtype
 ```
-
-

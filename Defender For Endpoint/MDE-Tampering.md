@@ -30,6 +30,3 @@ DeviceEvents
 | evaluate bag_unpack(AF,columnsConflict='keep_source') : (DeviceName:string,TimeGenerated:datetime,ActionType:string,Status:string, TamperingAction:long,Target:string)
 ```
 
-
-
-

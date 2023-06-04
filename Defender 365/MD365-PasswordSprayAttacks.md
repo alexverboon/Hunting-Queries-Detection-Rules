@@ -20,10 +20,9 @@ Query Source: Microsoft
 
 ### Microsoft 365 Defender
 
-
 Use this query to identify password spray activity.
 
-```Kusto
+```kql
 IdentityLogonEvents
 | where Timestamp > ago(7d)
 | where ActionType == "LogonFailed"
@@ -37,7 +36,7 @@ IdentityLogonEvents
 
 Use this query to identify other activities from the alerted ISP.
 
-```Kusto
+```kql
 CloudAppEvents
 | where Timestamp > ago(7d)
 | where AccountObjectId == <Impacted User Account Object ID>
@@ -47,7 +46,7 @@ CloudAppEvents
 
 Use this query to identify sign-in patterns for the impacted user.
 
-```Kusto
+```kql
 IdentityLogonEvents
 | where Timestamp > ago(7d)
 | where AccountObjectId == <Impacted User Account Object ID>
@@ -58,7 +57,7 @@ IdentityLogonEvents
 
 Use this query to identify MFA fatigue attacks.
 
-```Kusto
+```kql
 AADSignInEventsBeta
 | where Timestamp > ago(1h)
 //Error Code : 50088 : Limit on telecom MFA calls reached
@@ -73,7 +72,7 @@ AADSignInEventsBeta
 
 Use this query to identify MFA reset activities.
 
-```Kusto
+```kql
 let relevantActionTypes = pack_array("Disable Strong Authentication.","system.mfa.factor.deactivate", "user.mfa.factor.update", "user.mfa.factor.reset_all", "core.user_auth.mfa_bypass_attempted");
 CloudAppEvents
 AlertInfo
@@ -85,7 +84,7 @@ AlertInfo
 | project Timestamp, ReportId, AccountObjectId, IPAddress, ActionType
 ```
 
-```Kusto
+```kql
 CloudAppEvents
 | where Timestamp > ago(1d)
 | where ApplicationId == 11161 
@@ -102,7 +101,7 @@ CloudAppEvents
 
 Use this query to find new email inbox rules created by the impacted user.
 
-```Kusto
+```kql
 CloudAppEvents
 | where AccountObjectId == <ImpactedUser>
 | where Timestamp > ago(21d)

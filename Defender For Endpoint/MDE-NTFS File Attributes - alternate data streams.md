@@ -12,16 +12,12 @@
 
 Use the below queries to identify alternate data streams
 
-
 #### References
 
 - [Sneaky Tip and Tricks with Alternate Data Streams](https://www.sans.org/presentations/sneaky-tip-and-tricks-with-alternate-data-streams/)
 - [Malicious and Steganographic Potential in NTFS Alternate Data Streams](https://www.giac.org/paper/gsec/3075/malicious-steganographic-potential-ntfs-alternate-data-streams/105112)
 
-
-
 ### Microsoft 365 Defender
-
 
 ```kql
 DeviceAlertEvents
@@ -33,5 +29,3 @@ DeviceProcessEvents
 | where FileName   contains ":"
 // | invoke FileProfile(SHA256,100) 
 ```
-
-

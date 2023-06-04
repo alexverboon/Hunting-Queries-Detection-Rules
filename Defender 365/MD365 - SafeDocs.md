@@ -6,13 +6,9 @@
 
 Use the below queries to retreive Safe Docs Events from Microsoft 365 Defender
 
-
 #### References
 
-
-
 ### Microsoft 365 Defender
-
 
 All SafeDocs Events
 
@@ -39,7 +35,7 @@ DeviceEvents
 
 More filtering if you like
 
-```
+```kql
 DeviceEvents
 | where ActionType == "SafeDocFileScan"
 | extend xRawEventData = parse_json(AdditionalFields)
@@ -57,6 +53,3 @@ DeviceEvents
 // | where VerificationResult == "no_result"
 // | distinct DeviceName
 ```
-
-
-

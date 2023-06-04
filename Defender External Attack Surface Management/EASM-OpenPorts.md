@@ -9,8 +9,6 @@ Use the below queries to retrieve information about systems with Open Ports from
 
 #### References
 
-
-
 ### Microsoft Sentinel
 
 List all assets with Open ports

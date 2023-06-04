@@ -5,13 +5,11 @@
 ### Description
 
 Device discovery uses Microsoft Defender for Endpoint on onboarded Windows 10 and Server 2019 devices to discover unmanaged devices in your corporate network. 
-For each discovered device you see which onboarded device it was seen by. This information can help determine the network location of each discovered device and subsequently, help to identify it in the network. 
+For each discovered device you see which onboarded device it was seen by. This information can help determine the network location of each discovered device and subsequently, help to identify it in the network.
 
 For a particular discovered device in the network, you can now look at a new "SeenBy” column, added to the DeviceInfo record in Advanced Hunting. This lists the device ids of the last devices (up to 5) to have seen the discovered device.
 
-
 You can use the following query to return the relevant data on the specified discovered device id, along with the list of devices that have seen it in the network. 
-
 
 ### References
 
@@ -19,7 +17,7 @@ You can use the following query to return the relevant data on the specified dis
 
 ### Microsoft 365 Defender
 
-```Kusto
+```kql
 let deviceId = ""; // Fill ID for specific device, leave blank for all 
 let lookback = ago(7d);  
 let machines = DeviceInfo  
@@ -42,10 +40,9 @@ machines
 | project-reorder DeviceName, DeviceId, SeenByDeviceNames, SeenByDeviceIds, * 
 ```
 
-
 Run this query on the DeviceInfo table to return all discovered devices along with the most up-to-date details for each device:
 
-```
+```kql
 DeviceInfo
 | summarize arg_max(Timestamp, *) by DeviceId  // Get latest known good per device Id
 | where isempty(MergedToDeviceId) // Remove invalidated/merged devices
@@ -55,7 +52,7 @@ DeviceInfo
 By invoking the SeenBy function, in your advanced hunting query, you can get detail on which onboarded device a discovered device was seen by. 
 This information can help determine the network location of each discovered device and subsequently, help to identify it in the network.
 
-```
+```kql
 DeviceInfo
 | where OnboardingStatus != "Onboarded"
 | summarize arg_max(Timestamp, *) by DeviceId 
@@ -72,7 +69,7 @@ Device discovery leverages Microsoft Defender for Endpoint onboarded devices as 
 
 This means that when a non-onboarded device attempts to communicate with an onboarded Microsoft Defender for Endpoint device, the attempt will generate a DeviceNetworkEvent and the non-onboarded device activities can be seen on the onboarded device timeline, and through the Advanced hunting DeviceNetworkEvents table.
 
-```
+```kql
 DeviceNetworkEvents
 | where ActionType == "ConnectionAcknowledged" or ActionType == "ConnectionAttempt"
 | take 10

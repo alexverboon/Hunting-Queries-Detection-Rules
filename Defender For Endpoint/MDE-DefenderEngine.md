@@ -12,12 +12,11 @@ Use the below queries to retrieve information about Microsoft Defender Antivirus
 - [Microsoft Defender Antivirus security intelligence and product updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-updates?view=o365-worldwide)
 - [Manage the gradual rollout process for Microsoft Defender updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-gradual-rollout?view=o365-worldwide)
 
-
 ### Microsoft 365 Defender
 
 // Detailed list of Defender Antivirus Engine, Platform and Signature updates
 
-```Kusto
+```kql
 DeviceTvmInfoGathering
 | extend xAVMode = parse_json(AdditionalFields.AvMode)
 | where isnotempty(xAVMode)
@@ -72,4 +71,3 @@ Append the below lines to the above query to get Engine, Platform and Signature 
 // Update Rings
 | project Timestamp, DeviceName, AvEngineRing, AvPlatformRing, AvSignatureRing
 ```
-

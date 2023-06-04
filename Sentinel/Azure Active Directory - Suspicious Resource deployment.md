@@ -6,14 +6,13 @@
 
 The Sentinel Analytics Rule *Suspicious Resource deployment* Identifies Identifies when a rare Resource and ResourceGroup deployment occurs by a previously unseen caller.
 
-
 #### References
-
 
 ### Microsoft Sentinel
 
 Use the below query to get a summary of these alerts and the total # of entities
 
+```kql
 let ioc_lookBack = 90d;
 let IncTitle = "Suspicious Resource deployment";
 SecurityIncident
@@ -28,5 +27,4 @@ on $left. AlertId == $right. SystemAlertId
 | extend EType = tostring((Entities.Type))
 | project TimeGenerated, IncidentNumber, EType, IncidentUrl
 | evaluate pivot(EType)
-
-
+```

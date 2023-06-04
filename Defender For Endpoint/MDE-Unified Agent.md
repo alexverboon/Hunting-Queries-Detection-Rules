@@ -6,16 +6,13 @@
 
 Use the below queries to find information about the Microsoft Defender for Endpoint - Unified Agent for downlevel servers Agent deployment
 
-
 #### References
-
-
 
 ### Microsoft 365 Defender
 
 MMA - Unified Agent status by Agent
 
-```Kusto
+```kql
 DeviceInfo
 | where OnboardingStatus == "Onboarded"
 | where isnotempty(OSPlatform) 
@@ -37,7 +34,7 @@ DeviceInfo
 
 MMA - Unified Agent status per Server
 
-```Kusto
+```kql
 DeviceInfo
 | where OnboardingStatus == "Onboarded"
 | where isnotempty(OSPlatform) 
@@ -50,7 +47,7 @@ DeviceInfo
 
 Server OS version overview
 
-```Kusto
+```kql
 DeviceInfo
 | where OnboardingStatus == "Onboarded"
 | where isnotempty(OSPlatform) and isnotempty(DeviceName)
@@ -60,12 +57,10 @@ DeviceInfo
 | summarize count() by ClientVersion,OSPlatform
 ```
 
-
 Shows servers and their patch status, servers that still have the MMA agent installed and a high number of missing patches
-will first need to be patched before installing the unified agent . 
+will first need to be patched before installing the unified agent .
 
-
-```Kusto
+```kql
 let missingkb = 
 // Details missing KBs Windows Server
 DeviceTvmSoftwareVulnerabilities
@@ -94,10 +89,9 @@ DeviceInfo
 on $left. DeviceName ==  $right.DeviceName
 ```
 
-
 Security Controls - Update EDR sensor for down-level Windows Server - Compliance Summary 
 
-```Kusto
+```kql
 DeviceTvmSecureConfigurationAssessment
 | where isnotempty(OSPlatform) and isnotempty(DeviceName)
 | where OSPlatform contains "WindowsServer2012R2" or OSPlatform contains "WindowsServer2016" 
@@ -112,4 +106,3 @@ DeviceTvmSecureConfigurationAssessment
 | extend PctCompliant = toint((Compliant*100) / TotalDevices)
 | project OSPlatform, Configuration, Compliant, NonCompliant, TotalDevices, PctCompliant
 ```
-

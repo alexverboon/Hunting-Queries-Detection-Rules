@@ -13,7 +13,7 @@ The Sentinel Analytics Rule *TI map IP entity to SigninLogs* Identifies a match 
 
 Use the below query to get a summary of Incidents
 
-```Kusto
+```kql
 let ioc_lookBack = 90d;
 let lookback = 90d;
 let IncTitle = dynamic(["(Preview) TI map IP entity to SigninLogs","TI map IP entity to SigninLogs"]);
@@ -60,8 +60,7 @@ Below is the original query from Sentinel, modify the lines to see successful/un
             | where StatusCode == "0"
             //| where StatusCode  != "0"
 
-
-```Kusto
+```kql
 let dt_lookBack = 90d;
 let ioc_lookBack = 30d;
 let aadFunc = (tableName: string) {
@@ -130,10 +129,3 @@ let aadSignin = aadFunc("SigninLogs");
 let aadNonInt = aadFunc("AADNonInteractiveUserSignInLogs");
 union isfuzzy=true aadSignin, aadNonInt
 ```
-
-
-
-
-
-
-

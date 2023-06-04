@@ -10,9 +10,7 @@ Use the below queries to retrieve Defender External Attack Surface Management us
 
 - [Data Connectors for Azure Log Analytics and Data Explorer Now in Public Preview](https://techcommunity.microsoft.com/t5/microsoft-defender-external/data-connectors-for-azure-log-analytics-and-data-explorer-now-in/ba-p/3776898)
 
-
 ### Microsoft Sentinel
-
 
 EASM Billable Data
 
@@ -30,7 +28,7 @@ union withsource= _TableName Easm*
 
 Visualize EASM Table Usage over time
 
-```
+```kql
 Usage
 | where TimeGenerated > ago(30d)
 | where DataType startswith "Easm"
@@ -41,10 +39,9 @@ Usage
 
 Last entries written to EASM Tables
 
-```
+```kql
 union withsource= _TableName Easm*
 | where TimeGenerated > ago(90d)
 | summarize arg_max(TimeGenerated,*) by _TableName
 | project _TableName, TimeGenerated
 ```
-

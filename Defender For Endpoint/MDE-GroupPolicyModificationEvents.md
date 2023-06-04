@@ -19,13 +19,11 @@ Use the below queries to to detect the following events on Defender for Endpoint
 - Scripts are added/modified within the SYSVOL share 
 - Group Policy logon scripts are executed on clients 
 
-
 #### References
 
 - [[MS-GPAC]: Group Policy: Audit Configuration Extension](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-gpac/10d91136-2d82-46b9-9677-cf4d47ba2261)
 - [2.2.1.2 Subcategory and SubcategoryGUID](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-gpac/77878370-0712-47cd-997d-b07053429f6d)
 - [4719(S): System audit policy was changed](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4719)
-
 
 ### Microsoft 365 Defender
 
@@ -35,7 +33,7 @@ Audit Policy Changes
 DeviceEvents
 | where ActionType == "AuditPolicyModification"
 | extend polmod = parse_json(AdditionalFields)
-| extend AuditPolicyChange	= polmod.AuditPolicyChanges
+| extend AuditPolicyChange = polmod.AuditPolicyChanges
 | extend CategoryId = trim(@"[^\w]+",tostring(polmod.CategoryId))
 | extend SubcategoryGuid = toupper(polmod.SubcategoryGuid)
 | extend SubcategoryId = trim(@"[^\w]+",tostring(polmod.SubcategoryId))
@@ -148,7 +146,7 @@ DeviceFileEvents
 
 Audit policy configuration file changes on clients
 
-```
+```kql
 DeviceFileEvents
 | where FileName == "audit.csv"
 | distinct DeviceName, FileName, FolderPath, InitiatingProcessAccountName
@@ -158,7 +156,7 @@ DeviceFileEvents
 
 Scripts added/modified in SSYSVVOL
 
-```
+```kql
 let domainsysvol = @"\\corp.net\SysVol\";
 DeviceFileEvents
 | where FolderPath startswith domainsysvol
@@ -169,7 +167,7 @@ DeviceFileEvents
 
 Logon Script execution
 
-```
+```kql
 DeviceProcessEvents
 | where FileName == "powershell.exe" or FileName == "cmd.exe"
 | where InitiatingProcessFileName == 'gpscript.exe'
@@ -178,14 +176,13 @@ DeviceProcessEvents
 
 GPO Logon Script registry
 
-```Kusto
+```kql
 DeviceRegistryEvents
 | where RegistryKey startswith @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Scripts"
 | where RegistryValueData contains @"\SysVol\"
 | where RegistryValueData has_any (".exe",".ps1",".bat",".cmd","vbs","wsh",".wsf",".py")
 | project Timestamp, DeviceName, RegistryValueData, RegistryKey
 ```
-
 
 ### PowerShell
 
@@ -199,6 +196,4 @@ $event = $polchanges[0]
 $eventXML = [xml]$event.ToXml() 
 $eventXML.Event.EventData.Data
 ```
-
-
 
