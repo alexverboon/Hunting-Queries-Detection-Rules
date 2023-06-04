@@ -24,7 +24,7 @@ The queries in this repository are split into different categories. The MITRE AT
 ## Products
 
 - [Defender 365 rules](./Defender%20365/)
-- [Defender For Endpoint detection rules](./Defender%20for%20Endpoint/)
+- [Defender For Endpoint detection rules](./Defender%20For%20Endpoint/)
 - [Defender For Identity detection rules](./Defender%20For%20Identity)
 - [Defender For Cloud Apps detection rules](./Defender%20For%20Cloud%20Apps)
 - [Defender For Office 365](./Defender%20For%20Office%20365/)
