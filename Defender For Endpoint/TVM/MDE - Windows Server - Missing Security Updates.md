@@ -6,12 +6,9 @@
 
 The below query provides an overview of missing security updates for Windows Server devices
 
-
 #### References
 
-
 ### Microsoft 365 Defender
-
 
 Overview Missing KBs Windows Server
 
@@ -52,6 +49,3 @@ DeviceTvmSoftwareVulnerabilities
 | extend TotalMissingKB = array_length(MissingKBs)
 
 ```
-
-
-

@@ -10,8 +10,6 @@ The below query provides an overview of missing security updates for Windows 10 
 
 ### Microsoft 365 Defender
 
-
-
 Overview Missing KBs Windows 10
 
 ```kql
