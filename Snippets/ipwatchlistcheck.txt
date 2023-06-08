@@ -1,0 +1,7 @@
+let MyNetWorkAddresses=_GetWatchlist('NetworkAddresses');
+let IPs = datatable(ip:string)
+[
+  '80.0'   // Your Test IP
+];
+IPs
+| evaluate  ipv4_lookup(MyNetWorkAddresses,ip,SearchKey, return_unmatched = true)
