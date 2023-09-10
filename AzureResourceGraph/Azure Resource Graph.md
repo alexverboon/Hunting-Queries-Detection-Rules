@@ -12,9 +12,9 @@ Use the below queries to query data in Azure Resource Graph
 - [Query data in Azure Data Explorer and Azure Resource Graph from Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/azure-monitor-data-explorer-proxy)
 - [Azure Resource Graph table and resource type reference](https://learn.microsoft.com/en-us/azure/governance/resource-graph/reference/supported-tables-resources)
 
-
 ### Microsoft Sentinel
 
+#### Resources
 
 List all Resource types
 
@@ -91,13 +91,14 @@ arg("").Resources
 ```
 
 List Query Packs
+
 ```kql
 arg("").Resources
 | where type == "microsoft.operationalinsights/querypacks"
 | project name, resourceGroup
 ```
 
-Azure Policy Resources
+#### Azure Policy Resources
 
 List all Azure Policy types
 
@@ -106,17 +107,14 @@ arg("").policyresources
 | distinct type
 ```
 
-
-Azure Security Resources
-
+#### Azure Security Resources
 
 ```kql
 arg("").securityresources
 | distinct type
 ```
 
-
-Azure Resource Health
+#### Azure Resource Health
 
 List active resource health alerts
 
@@ -131,8 +129,7 @@ arg("").servicehealthresources
 | where Status == "Active"
 ```
 
-
-IOT Security Resources
+#### IOT Security Resources
 
 ```kql
 arg("").iotsecurityresources
@@ -150,7 +147,7 @@ arg("").iotsecurityresources
 | extend deviceSubTypeDisplayName = tostring(properties.deviceSubTypeDisplayName)
 ```
 
-authorizationresources 
+#### authorizationresources
 
 list Roles
 
@@ -163,14 +160,9 @@ arg("").authorizationresources
 
 ```
 
-Management Groups, Subscriptions
+#### Management Groups, Subscriptions
 
 ```kql
 arg("").resourcecontainers
 | where type == "microsoft.resources/subscriptions"
 ```
-
-
-
-
-
