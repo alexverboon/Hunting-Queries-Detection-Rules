@@ -33,3 +33,25 @@ EasmRisk_CL
 | where CategoryName_s == "High Severity"
 | where MetricDisplayName_s == "ASI: Telnet Service Exposure"
 ```
+
+Create a watchlist with the following attributes:
+IPAddress, Description, Tag, Risk
+
+Example:
+1.2.3.4,SSH Server,,"ASI: Telnet Service Exposure"
+
+```kql
+// EASM Risk Whitelist
+let EASMWLTelnet = _GetWatchlist('EASMRiskWhitelist') | where ['Risk'] == 'ASI: Telnet Service Exposure'
+| extend IPAddress = SearchKey
+| project IPAddress;
+// Servers with Telnet Service Exposure
+EasmRisk_CL
+| extend IPAddress = AssetName_s
+| where IPAddress !in(EASMWLTelnet)
+| where AssetLastSeen_t >= ago(7d)
+| where CategoryName_s == "High Severity"
+| where MetricDisplayName_s == "ASI: Telnet Service Exposure"
+| extend Rule = tostring(parse_json(AssetDiscoveryAuditTrail_s)[0].Rule)
+| project TimeGenerated, AssetType_s, AssetName_s,IPAddress, CategoryName_s, Rule, MetricDisplayName_s, AssetLastSeen_t
+```
