@@ -19,6 +19,7 @@ This section only includes references to queries that can be mapped in the MITRE
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1136.001 |  Create Account: Local Account | [Create Local Account](../Defender%20For%20Endpoint/MDE-LocalAccountCreated.md)  |
 
 ## Privilege Escalation
 
