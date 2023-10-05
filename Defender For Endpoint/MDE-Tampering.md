@@ -10,7 +10,7 @@ Use the below queries to find Microsoft Defender tampering attempts
 
 | Technique ID | Title    | Link    |
 | ---  | --- | --- |
-| T1562.001 | Disable or Modify Tools | https://attack.mitre.org/techniques/T1562/001/ |
+| T1562.001 | Disable or Modify Tools | (https://attack.mitre.org/techniques/T1562/001/) |
 
 #### References
 
@@ -24,9 +24,18 @@ Use the below queries to find Microsoft Defender tampering attempts
 
 ```kql
 DeviceEvents
-| where TimeGenerated > ago (30d)
+| where Timestamp > ago (30d)
 | where ActionType == @"TamperingAttempt"
 | extend AF = parse_json(AdditionalFields)
 | evaluate bag_unpack(AF,columnsConflict='keep_source') : (DeviceName:string,TimeGenerated:datetime,ActionType:string,Status:string, TamperingAction:long,Target:string)
 ```
 
+### Microsoft Sentinel
+
+```kql
+DeviceEvents
+| where TimeGenerated > ago (30d)
+| where ActionType == @"TamperingAttempt"
+| extend AF = parse_json(AdditionalFields)
+| evaluate bag_unpack(AF,columnsConflict='keep_source') : (DeviceName:string,TimeGenerated:datetime,ActionType:string,Status:string, TamperingAction:long,Target:string)
+```
