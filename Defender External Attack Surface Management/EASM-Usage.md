@@ -16,7 +16,7 @@ EASM Billable Data
 
 ```kql
 union withsource= _TableName Easm*
-| where TimeGenerated > ago(30)
+| where TimeGenerated > ago(30d)
 | summarize
     Entries = count(), Size = sum(_BilledSize), GB = format_bytes(sum(_BilledSize),0,"GB") by _TableName
 | project
