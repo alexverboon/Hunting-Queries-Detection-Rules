@@ -65,4 +65,4 @@ AuditLogs
 | extend AccessReviewName = tostring(TargetResources[1].displayName)
 | extend IPAddress = tostring(AdditionalDetails[3].value)
 | project TimeGenerated, AccessReviewName, OperationName, IPAddress
-```kql
+```
