@@ -1,0 +1,11 @@
+// *****************************************************************************************
+// Parser: _Wl_NetworkAddresses_zscaler
+// Description: This parser retrieves data from the NetworkAddresses-zscaler watchlist
+// The NetworkAddresses-zscaler watchlist includes ZScaler service IP addresses
+// *****************************************************************************************
+let Wl_NetworkAddresses_zscaler = _GetWatchlist('NetworkAddresses-Zscaler')
+| extend WatchlistSource = 'zscaler'
+| extend IPSubnet = ['IP Subnet']
+| extend RangeName = ['Range Name']
+| project LastUpdatedTimeUTC, WatchlistSource, IPSubnet, RangeName, Tags;
+Wl_NetworkAddresses_zscaler

@@ -1,0 +1,8 @@
+// ***********************************************************************************
+// Parser: Wl_NetworkAddresses
+// Description: This parser consolidates various Sentinel Networkaddresses watchlists
+// ***********************************************************************************
+union isfuzzy=true 
+Wl_NetworkAddresses_Custom,
+Wl_NetworkAddresses_MSFT,
+Wl_NetworkAddresses_zscaler
