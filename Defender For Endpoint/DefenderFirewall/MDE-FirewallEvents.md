@@ -15,16 +15,12 @@ Within the Windows Event log the following events are created:
 * 5031 - application blocked from accepting incoming connections on the network
 * 5157 - blocked connection
 
-
 #### References
 
 - [Investigate devices in the Microsoft Defender for Endpoint Devices list](https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/investigate-machines?view=o365-worldwide)
 - [Audit Filtering Platform Connection](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-filtering-platform-connection)
 
-
-
 ### Microsoft 365 Defender
-
 
 Find Inbound and Outbound blocked events
 
@@ -34,6 +30,3 @@ DeviceEvents
 | project DeviceName, DeviceId , Timestamp , InitiatingProcessFileName , InitiatingProcessParentFileName, RemoteIP, RemotePort, LocalIP, LocalPort
 | summarize MachineCount=dcount(DeviceId) by RemoteIP
 ```
-
-
-
