@@ -31,6 +31,8 @@ AuditLogs
 | where OperationName == "Update StsRefreshTokenValidFrom Timestamp"
 ```
 
+When **Allow on-premises password change to reset user risk** setting is enabled, you get the following event
+
 ```kql
 AADUserRiskEvents
 | where RiskDetail == "userChangedPasswordOnPremises"
