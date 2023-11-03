@@ -4,7 +4,7 @@
 
 ### Description
 
-Use the below queries to retireve information about email attachment formats / legacy formats. 
+Use the below queries to retireve information about email attachment formats / legacy formats.
 
 #### References
 
