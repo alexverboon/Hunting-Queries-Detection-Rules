@@ -29,4 +29,4 @@ DeviceInfo
 
 ### Microsoft Sentinel
 
-The attribute ***ConnectivityType*** is currently not synched throuhg the Microosft Defender XDR Data connector in Sentinel, therefore the query cannot be executed there currently.
+The attribute ***ConnectivityType*** is currently not synched by the Microosft Defender XDR Data connector in Sentinel, therefore the query cannot be executed there currently.
