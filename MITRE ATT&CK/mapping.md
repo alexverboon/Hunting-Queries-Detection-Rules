@@ -55,6 +55,7 @@ This section only includes references to queries that can be mapped in the MITRE
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1114.003 | Email Collection: Email Forwarding Rule | [E-Mail Forwarding](../Defender%20For%20Office%20365/MDO-InboxForwarding.md) |
 
 ## Command and Control
 
