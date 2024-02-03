@@ -4,10 +4,9 @@
 
 ### Description
 
-When configuring the TAXII Connector in Sentinel, you might get the follwing error message:
+When configuring the TAXII Connector in Sentinel, you might get the follwing error message.
 
-Failed to add TAXII connector
-The TAXII connector could not be configured due to an unexpected error.
+Failed to add TAXII connector: The TAXII connector could not be configured due to an unexpected error.
 
 Use the below query to retrieve Microsoft Sentinel TAXII Connector errors from the Azure Activity log. 
 
