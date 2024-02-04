@@ -1,14 +1,15 @@
-# Microsoft Defender - Engine , Platform states
+# Microsoft Defender - Engine, Platform and update states
 
 ## Query Information
 
 ### Description
 
-Use the below queries to retrieve information about Microsoft Defender Antivirus Engine, Platform and Singnature status 
+Use the below queries to retrieve information about Microsoft Defender Antivirus Engine, Platform and Singnature status
 
 #### References
 
 - [Device health reports in Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/device-health-reports?view=o365-worldwide)
+- [Device health, Microsoft Defender Antivirus health report](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/device-health-microsoft-defender-antivirus-health?view=o365-worldwide#antivirus-security-intelligence-version-card)
 - [Microsoft Defender Antivirus security intelligence and product updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-updates?view=o365-worldwide)
 - [Manage the gradual rollout process for Microsoft Defender updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-gradual-rollout?view=o365-worldwide)
 
@@ -44,6 +45,7 @@ DeviceTvmInfoGathering
     AvSignatureRing: string,
     AvSignatureUpdateTime: datetime, 
     AvSignatureVersion: string,
+    CloudProtectionState: string,
     AdditionalFields: dynamic)
 ```
 
