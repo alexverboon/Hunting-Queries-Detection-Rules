@@ -13,6 +13,8 @@
 
 Use the below query to identify membership additons to the built-in local groups on Windows devices.
 
+Note that the below queries alsmost look identical, however due to some slight differences in the IdentityInfo table in Microsoft Defender XDR and Sentinel two different queries are required.
+
 #### References
 
 - [Security Identifiers](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers)
