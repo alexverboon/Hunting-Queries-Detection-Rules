@@ -1,3 +1,14 @@
+# App Governance 
+
+## Query Information
+
+### Description
+
+Find all the activities involving the cloud app in last 30 days
+
+### Microsoft 365 Defender
+
+```kql
 // Find all the activities involving the cloud app in last 30 days
 let now = now();
 let appid = (i : dynamic )
@@ -14,10 +25,11 @@ let appid = (i : dynamic )
 CloudAppEvents
 | where ((RawEventData.Workload ==  "SharePoint" or RawEventData.Workload == "OneDrive") and (ActionType == "FileUploaded" or ActionType == "FileDownloaded")) or (RawEventData.Workload == "Exchange" and (ActionType == "Send" or ActionType == "MailItemsAccessed")) or (RawEventData.Workload == "MicrosoftTeams" and (ActionType == "MessagesListed" or ActionType == "MessageRead" or ActionType == "MessagesExported" or ActionType == "MessageSent"))
 | extend AppId = appid(RawEventData)
-| where AppId == ""
+| where AppId == "<APP ID HERE >"
 | where Timestamp between (datetime("2023-05-07 00:00:00Z")..30d)
 | extend tostring(RawEventData.Id)
 | summarize arg_max(Timestamp, *) by RawEventData_Id
 | sort by Timestamp desc
 | project Timestamp, OAuthApplicationId = AppId, ReportId, AccountId, AccountObjectId, AccountDisplayName, IPAddress, UserAgent, Workload = tostring(RawEventData.Workload), ActionType, SensitivityLabel = tostring(RawEventData.SensitivityLabelId), tostring(RawEventData)
 | limit 1000
+```
