@@ -20,7 +20,7 @@ and then use this regex to extract the OU
 
 #### References
 
-### Microsoft Sentinel
+### Microsoft Sentinel / 365 Defender
 
 ```kql
 let ADGroups = dynamic(['LAPS_Global_Workplace_Reset', 'LAPS_Servers_Reset']);
