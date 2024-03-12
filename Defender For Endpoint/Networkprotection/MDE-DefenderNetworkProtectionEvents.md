@@ -78,7 +78,6 @@ Defender SmartScreen  and Network Protection
 ```kql
 DeviceEvents
 | where ActionType in ("SmartScreenUrlWarning","SmartScreenUserOverride","ExploitGuardNetworkProtectionAudited","ExploitGuardNetworkProtectionBlocked")
- | distinct ActionType, AdditionalFields, RemoteUrl
 | extend data = parse_json(AdditionalFields)
 | extend Category = iff(ActionType == "SmartScreenUrlWarning",tostring(parse_json(data).Experience),
                     iff(ActionType == "ExploitGuardNetworkProtectionAudited",tostring(parse_json(data).ResponseCategory),
