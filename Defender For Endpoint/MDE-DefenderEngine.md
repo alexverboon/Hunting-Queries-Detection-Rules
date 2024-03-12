@@ -12,6 +12,8 @@ Use the below queries to retrieve information about Microsoft Defender Antivirus
 - [Device health, Microsoft Defender Antivirus health report](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/device-health-microsoft-defender-antivirus-health?view=o365-worldwide#antivirus-security-intelligence-version-card)
 - [Microsoft Defender Antivirus security intelligence and product updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-updates?view=o365-worldwide)
 - [Manage the gradual rollout process for Microsoft Defender updates](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-gradual-rollout?view=o365-worldwide)
+- [Microsoft Defender Antivirus: Changes to "engine update" support plans](https://admin.microsoft.com/Adminportal/Home?ref=MessageCenter/:/messages/MC732103)
+
 
 ### Microsoft 365 Defender
 
