@@ -48,3 +48,26 @@ DeviceProcessEvents
 | where tolower(ProcessCommandLine) matches regex fwoffregex
 | project TimeGenerated, DeviceName,ProcessCommandLine
 ```
+
+## Simulation
+
+```powershell
+netsh advfirewall set allprofiles state off
+```
+
+```powershell
+# Disable Windows Firewall for all profiles
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
+
+```
+Disable
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile" /v "EnableFirewall" /t REG_DWORD /d 0 /f
+Cleanup
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile" /v "EnableFirewall" /t REG_DWORD /d 1 /f
+
+```
+
+
+
+

@@ -25,7 +25,7 @@ Note that the below queries alsmost look identical, however due to some slight d
 ```kql
 let DirectoryIdentities = (IdentityInfo
 | where Timestamp > ago(21d)
-| summarize arg_max(TimeGenerated,*) by AccountUpn
+| summarize arg_max(Timestamp,*) by AccountUpn
 | project AccountDisplayName, AccountObjectId,OnPremSid, AccountDomain, AccountName);
 let DomainIdentifiers = (DirectoryIdentities
 | where isnotempty(OnPremSid)

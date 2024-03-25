@@ -1,4 +1,4 @@
-# TITLE
+# Defender for Endpoint - Firewall filtering events
 
 ## Query Information
 
