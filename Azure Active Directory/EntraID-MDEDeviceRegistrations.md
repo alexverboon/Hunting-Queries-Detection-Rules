@@ -15,7 +15,6 @@ Use the below queries to see the Device registrations and deviceOSType changes i
 - [Manage security settings for Windows, macOS, and Linux natively in Defender for Endpoint](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/manage-security-settings-for-windows-macos-and-linux-natively-in/ba-p/3870617)
 - [Manage endpoint security policies on devices onboarded to Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/mem/intune/protect/mde-security-integration#create-azure-ad-groups)
 
-
 ### Microsoft Sentinel
 
 Auditlogs - Microsoft Entra ID Connector
