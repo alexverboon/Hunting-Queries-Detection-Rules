@@ -9,9 +9,12 @@ Use the below queries to see the Device registrations and deviceOSType changes i
 #### References
 
 - [Windows Server devices managed by Defender for Endpoint now recognized as a new OS platform](https://techcommunity.microsoft.com/t5/intune-customer-success/windows-server-devices-managed-by-defender-for-endpoint-now/ba-p/3767773)
-
 - [Manage endpoint security policies on devices onboarded to Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/mem/intune/protect/mde-security-integration)
 - [Security Settings Management in Microsoft Defender for Endpoint is now generally available](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/security-settings-management-in-microsoft-defender-for-endpoint/ba-p/3356970)
+- [Simplified security settings management is now generally available](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/simplified-security-settings-management-is-now-generally/ba-p/3975158)
+- [Manage security settings for Windows, macOS, and Linux natively in Defender for Endpoint](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/manage-security-settings-for-windows-macos-and-linux-natively-in/ba-p/3870617)
+- [Manage endpoint security policies on devices onboarded to Microsoft Defender for Endpoint](https://learn.microsoft.com/en-us/mem/intune/protect/mde-security-integration#create-azure-ad-groups)
+
 
 ### Microsoft Sentinel
 
