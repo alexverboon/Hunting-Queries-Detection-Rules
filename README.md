@@ -1,7 +1,8 @@
 # KQL Sentinel & Defender queries
 
-# KQL for Defender For Endpoint & Microsoft Sentinel
-The purpose of this repository is to share KQL queries that can be used by anyone and are understandable. These queries are intended to increase detection coverage through the logs of Microsoft Security products. Not all suspicious activities generate an alert by default, but many of those activities can be made detectable through the logs. These queries include Detection Rules, Hunting Queries and Visualisations. Anyone is free to use the queries. If you have any questions feel free to reach out to me on twitter [@AlexVerboon](https://twitter.com/alexverboon). 
+# KQL for Defender XDR, Microsoft Sentinel & other Microsoft Solutions
+
+The purpose of this repository is to share KQL queries that can be used by anyone and are understandable. These queries are intended to increase detection coverage through the logs of Microsoft Security products. Not all suspicious activities generate an alert by default, but many of those activities can be made detectable through the logs. These queries include Detection Rules, Hunting Queries and Visualisations. Anyone is free to use the queries. If you have any questions feel free to reach out to me on twitter [@AlexVerboon](https://twitter.com/alexverboon).
 
 **Presenting this material as your own is illegal and forbidden. A reference to Twitter [@AlexVerboon](https://twitter.com/alexverboon) or Github [AlexVerboon](https://github.com/alexverboon/Hunting-Queries-Detection-Rules) is much appriciated when sharing or using the content.**
 
@@ -15,20 +16,24 @@ In addition to the queries I have written myself, it's worth mentioning that cer
 
 # KQL Categories
 
-The queries in this repository are split into different categories. The MITRE ATT&CK category contains a list of queries mapped to the tactics of the MITRE Framwork. The product section contains queries specific to Microsoft security products. 
+The queries in this repository are split into different categories. The MITRE ATT&CK category contains a list of queries mapped to the tactics of the MITRE Framwork. The product section contains queries specific to Microsoft security products.
 
 ## MITRE ATT&CK
 
 - [MITRE ATT&CK Mapping](./MITRE%20ATT%26CK/)
 
-## Products
+## Products & Log Sources
 
-- [Defender 365 rules](./Defender%20365/)
+- [Defender XDR rules](./Defender%20365/)
 - [Defender For Endpoint detection rules](./Defender%20For%20Endpoint/)
 - [Defender For Identity detection rules](./Defender%20For%20Identity)
 - [Defender For Cloud Apps detection rules](./Defender%20For%20Cloud%20Apps)
+- [App Governance](./AppGovernance/)
 - [Defender For Office 365](./Defender%20For%20Office%20365/)
+- [Defender for IoT](./Defender4IoT/)
 - [Azure Active Directory](./Azure%20Active%20Directory)
 - [Active Directory](./ActiveDirectory/)
 - [Microsoft Sentinel](./Sentinel)
 - [Defender External Attack Surface Management](./Defender%20External%20Attack%20Surface%20Management/)
+- [Microsoft Security Exposure Management](./ExposureManagement/)
+- [Azure Resxource Graph](./AzureResourceGraph/)
