@@ -25,10 +25,8 @@ AuditLogs
 | where Attribute == 'Group.DisplayName')
 | mv-apply Group =  TargetResources.modifiedProperties on ( project Attribute = Group.displayName, RemovedGroupName = replace_string(tostring(Group.oldValue), '"', '')
 | where Attribute == 'Group.DisplayName')
-| extend GroupName = iff(isnotempty(AddedGroupName),AddedGroupName, iff(isnotempty(RemovedGroupName), RemovedGroupName,"not found"))
+| extend GroupName = iff(OperationName == 'Remove member from group',RemovedGroupName, iff(OperationName == 'Add member to group',AddedGroupName,""))
 | project TimeGenerated, OperationName, DeviceName,GroupName
-```
-
 ```
 
 Group Membership changes from Defender for Cloud Apps log
