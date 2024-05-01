@@ -24,9 +24,9 @@ Use the below query to identify Active Directory accounts disabled by a domain c
 - [How to protect against BEC & AiTM attacks via Microsoft 365 Defender | Automatic Attack Disruption](https://derkvanderwoude.medium.com/how-to-protect-against-bec-aitm-attacks-via-microsoft-365-defender-automatic-attack-disruption-13a33ca44a39)
 - [How to use Automatic Attack Disruption in Microsoft 365 Defender BEC, AiTM & HumOR](https://jeffreyappel.nl/how-to-use-automatic-attack-disruption-in-microsoft-365-defender-bec-aitm-humor/)
 
-### Microsoft 365 Defender
+### Microsoft Sentinel
 
-Show disabled accounts where the actor was a domain controller
+Show disabled accounts where the actor was a domain controller - Active Directory logs
 
 ```kql
 let AllDomainControllers =
@@ -43,4 +43,21 @@ IdentityDirectoryEvents
 | where isnotempty( ACTOR_DEVICE)
 | where ACTOR_DEVICE in (AllDomainControllers)
 | project TimeGenerated, TargetAccountDisplayName, ACTOR_DEVICE
+```
+
+When the Account is synched with Entra ID, use the following logs to see the activities in the Entra ID Audit log.
+
+```kql
+AuditLogs
+| where OperationName == 'Disable account' //or OperationName == 'Update user'
+| mv-expand TargetResources
+| extend Actor_userPrincipalName = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
+| extend Target_userPrincipalName = tostring(TargetResources.userPrincipalName)
+| mv-apply Properties = TargetResources.modifiedProperties on ( 
+project Name = Properties.displayName, AccountEnabled = (Properties.newValue)
+| where Name == 'AccountEnabled'
+)
+| mv-apply Action =  TargetResources.modifiedProperties on ( project Name = Action.displayName, ActionClientName = Action.newValue
+| where Name == 'Action Client Name')
+| project TimeGenerated, OperationName,Actor_userPrincipalName, Target_userPrincipalName, AccountEnabled, ActionClientName
 ```
