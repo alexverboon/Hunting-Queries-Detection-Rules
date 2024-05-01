@@ -12,45 +12,43 @@ Use the below queires to find Entra ID group membership changes initiated for Dy
 
 ### Microsoft Sentinel
 
-Group Membership changes from the Entra ID Auditlog log
+Device Dynamic Group Membership changes from the Entra ID Auditlog log
 
 ```kql
 AuditLogs 
-| where OperationName == "Add member to group"
-| where Category == "GroupManagement"
-| where parse_json(tostring(InitiatedBy.app)).displayName == "Microsoft Approval Management"
-| extend DeviceName = tostring(TargetResources[0].displayName)
-| extend GroupObjectId = tostring(TargetResources[1].id)
-| project TimeGenerated, OperationName, DeviceName, GroupObjectId
+| where OperationName == "Add member to group" or OperationName == "Remove member from group"
+| where Identity == "Microsoft Approval Management"
+| mv-expand TargetResources
+| where TargetResources.type == "Device"
+| extend DeviceName = tostring(TargetResources.displayName)
+| mv-apply Group =  TargetResources.modifiedProperties on ( project Attribute = Group.displayName, AddedGroupName = replace_string(tostring(Group.newValue), '"', '')
+| where Attribute == 'Group.DisplayName')
+| mv-apply Group =  TargetResources.modifiedProperties on ( project Attribute = Group.displayName, RemovedGroupName = replace_string(tostring(Group.oldValue), '"', '')
+| where Attribute == 'Group.DisplayName')
+| extend GroupName = iff(isnotempty(AddedGroupName),AddedGroupName, iff(isnotempty(RemovedGroupName), RemovedGroupName,"not found"))
+| project TimeGenerated, OperationName, DeviceName,GroupName
 ```
 
-```kql
-AuditLogs 
-| where OperationName == "Remove member from group"
-| where Category == "GroupManagement"
-| where parse_json(tostring(InitiatedBy.app)).displayName == "Microsoft Approval Management"
-| extend DeviceName = tostring(TargetResources[0].displayName)
-| extend GroupObjectId = tostring(TargetResources[1].id)
-| project TimeGenerated, OperationName, DeviceName, GroupObjectId
 ```
 
 Group Membership changes from Defender for Cloud Apps log
 
 ```kql
 CloudAppEvents
+| where ActionType == "Remove member from group." or ActionType == 'Add member to group.'
 | where AccountDisplayName == "Microsoft Approval Management"
-| where ActionType == "Remove member from group."
-| extend GroupName = tostring(ActivityObjects[0].Name)
-| extend DeviceName = tostring(ActivityObjects[1].Name)
-| project TimeGenerated, ActionType, GroupName, DeviceName
-```
-
-```kql
-CloudAppEvents
-| where AccountDisplayName == "Microsoft Approval Management"
-| where ActionType == "Add member to group."
-| extend GroupName = tostring(ActivityObjects[0].Name)
-| extend DeviceName = tostring(ActivityObjects[1].Name)
-| project TimeGenerated, ActionType, GroupName, DeviceName
+| mv-apply RemoveDevice = ActivityObjects on (project RemoveDeviceName = RemoveDevice.Name, Role = RemoveDevice.Role
+| where Role == 'Target object'
+)
+| mv-apply AddDevice = RawEventData.Target on (project  AddDeviceName = AddDevice.ID, Type = AddDevice.Type
+| where Type == 1
+)
+| mv-apply Group = ActivityObjects on (project GroupName = Group.Name, Type = Group.Type
+| where Type == 'Group'
+)
+| extend DeviceName = iff(ActionType == 'Remove member from group.',RemoveDeviceName, iff(ActionType == 'Add member to group.',AddDeviceName,""))
+| project TimeGenerated, ActionType, DeviceName,GroupName
+| summarize arg_max(TimeGenerated,*) by  ActionType, DeviceName, tostring(GroupName)
+| project TimeGenerated, ActionType, DeviceName, GroupName
 ```
 
