@@ -83,4 +83,3 @@ CloudAppEvents
 | join kind=leftouter Identities
 on $left. AccountSid == $right. AccountSID
 ```
-
