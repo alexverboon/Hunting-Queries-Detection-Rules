@@ -61,3 +61,25 @@ project Name = Properties.displayName, AccountEnabled = (Properties.newValue)
 | where Name == 'Action Client Name')
 | project TimeGenerated, OperationName,Actor_userPrincipalName, Target_userPrincipalName, AccountEnabled, ActionClientName
 ```
+
+Get the remediation actions from Defender for Identity
+
+```kql
+let Identities = (IdentityInfo
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated,*) by AccountSID
+| project AccountSID, AccountDisplayName, AccountName, AccountUPN);
+CloudAppEvents
+| extend WorkLoad = tostring(parse_json(RawEventData).Workload)
+| where WorkLoad == "MicrosoftDefenderForIdentity" and ActionType == "RemediationActionAdded"
+| extend ResultDescription = tostring(RawEventData.ResultDescription)
+| extend ResultStatus = tostring(RawEventData.ResultStatus)
+| extend info = split(ResultDescription,"AddRemediationActionsAsync")[1]
+| parse-kv info as (InitiatedByAccountAadUserId:string) with (pair_delimiter=' ', kv_delimiter='=', quote='"') 
+| parse-kv info as (ActionType:string) with (pair_delimiter=' ', kv_delimiter='=', quote='"')  
+| parse-kv info as (AccountSid:string) with (pair_delimiter=' ', kv_delimiter='=', quote='"') 
+| extend ActorName = tostring(ActivityObjects[0].Name)
+| project TimeGenerated, InitiatedByAccountAadUserId,ActorName, ActionType,ResultStatus, AccountSid
+| join kind=leftouter Identities
+on $left. AccountSid == $right. AccountSID
+```
