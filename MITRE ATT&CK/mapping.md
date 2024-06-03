@@ -20,6 +20,7 @@ This section only includes references to queries that can be mapped in the MITRE
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
 | T1136.001 |  Create Account: Local Account | [Create Local Account](../Defender%20For%20Endpoint/MDE-LocalAccountCreated.md)  |
+| T1136.001 |  Create Account: Local Account | [Create Local Account](../Defender%20For%20Endpoint/MDE-WindowsBuiltInGroupMemberChanges.md)  |
 
 ## Privilege Escalation
 
@@ -45,6 +46,7 @@ This section only includes references to queries that can be mapped in the MITRE
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1087.002 | Account Discovery - Domain Account | [Honey Token Accounts](../Defender%20For%20Identity/MDI-Honeytoken%20was%20queried%20via%20SAM-R.md) |
 
 ## Lateral Movement
 
