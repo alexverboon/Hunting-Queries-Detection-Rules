@@ -10,7 +10,6 @@ Use the below query to identify failed sign-insto Entra ID due to Tenant restric
 
 - [Set up tenant restrictions v2](https://learn.microsoft.com/en-us/entra/external-id/tenant-restrictions-v2#option-3-enable-tenant-restrictions-on-windows-managed-devices-preview)
 
-
 ### Microsoft Sentinel
 
 ```kql
@@ -19,4 +18,3 @@ SigninLogs
 | where ResultType == "5000211"
 | project TimeGenerated, ResultType, ResultDescription, UserPrincipalName,ClientAppUsed, AppDisplayName, HomeTenantId, CrossTenantAccessType, IPAddress
 ```
-
