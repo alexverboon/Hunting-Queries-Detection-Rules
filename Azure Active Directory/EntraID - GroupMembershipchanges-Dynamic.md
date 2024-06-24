@@ -50,3 +50,20 @@ CloudAppEvents
 | project TimeGenerated, ActionType, DeviceName, GroupName
 ```
 
+Regular group changes
+
+```kql
+AuditLogs
+| where OperationName == "Remove member from group" or  OperationName == "Add member to group"
+| mv-expand TargetResources
+| mv-apply Group =  TargetResources.modifiedProperties on ( project Attribute = Group.displayName, AddedGroupName = replace_string(tostring(Group.newValue), '"', '')
+| where Attribute == 'Group.DisplayName')
+| mv-apply Group =  TargetResources.modifiedProperties on ( project Attribute = Group.displayName, RemovedGroupName = replace_string(tostring(Group.oldValue), '"', '')
+| where Attribute == 'Group.DisplayName')
+| extend GroupName = iff(OperationName == 'Remove member from group',RemovedGroupName, iff(OperationName == 'Add member to group',AddedGroupName,""))
+| extend InitiateduserPrincipalName = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
+| extend TargetuserPrincipalName = tostring(TargetResources.userPrincipalName)
+| extend Action = iff(OperationName == "Remove member from group","Remove",iff(OperationName == "Add member to group","Add","unknown"))
+| project TimeGenerated, Action, GroupName,InitiateduserPrincipalName, TargetuserPrincipalName 
+
+```

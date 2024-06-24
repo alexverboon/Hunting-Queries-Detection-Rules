@@ -6,12 +6,11 @@
 
 The CloudAppEvents table in the advanced hunting schema contains information about events involving accounts and objects in Office 365 and other cloud apps and services.
 
-Use the below queries to review the data usage within the CloudAppEvents table in Microsoft Sentinel. 
+Use the below queries to review the data usage within the CloudAppEvents table in Microsoft Sentinel.
 
 #### References
 
 - [CloudAppEvents](https://learn.microsoft.com/en-us/microsoft-365/security/defender/advanced-hunting-cloudappevents-table?view=o365-worldwide)
-
 
 ### Microsoft Sentinel
 
@@ -60,7 +59,8 @@ on $left.TimeGenerated ==  $right.TimeGenerated
 | summarize  round(sum(TotalVolumeGBUsage),2), round(sum(TotalVolumeGBLog),2) , round(sum(['Estimated cost']),2)
 ```
 
-// show how much the CloudAppEvents data usage compares to the rest of the logs. 
+// show how much the CloudAppEvents data usage compares to the rest of the logs.
+
 ```kql
 Usage
 | where TimeGenerated > ago (30d)

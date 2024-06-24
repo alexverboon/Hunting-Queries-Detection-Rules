@@ -97,3 +97,39 @@ on $left. DeviceName == $right. DeviceName
 | project-keep TimeGenerated, DeviceName,PublicIP, LocalIP, LocalPort, RemoteIP, RemotePort, RemoteIPType, ActionType,  InternetFacing*, InitiatingProcessFolderPath 
 | project-away InternetFacingInfo
 ```
+
+Combine IP address with TI in Sentinel
+
+```kql
+DeviceInfo
+| where IsInternetFacing
+| extend InternetFacingInfo = AdditionalFields 
+| extend InternetFacingLastSeen = tostring(AdditionalFields.InternetFacingLastSeen)
+| extend InternetFacingLocalIp = tostring(AdditionalFields.InternetFacingLocalIp)
+| extend InternetFacingLocalPort = tostring(AdditionalFields.InternetFacingLocalPort)
+| extend InternetFacingPublicScannedIp = tostring(AdditionalFields.InternetFacingPublicScannedIp)
+| extend InternetFacingPublicScannedPort = tostring(AdditionalFields.InternetFacingPublicScannedPort)
+| extend InternetFacingReason = tostring(AdditionalFields.InternetFacingReason)
+| extend InternetFacingTransportProtocol = tostring(AdditionalFields.InternetFacingTransportProtocol)
+| where InternetFacingReason == "ExternalNetworkConnection"
+| join kind=leftouter  (DeviceNetworkEvents
+| where RemoteIPType == "Public"
+| distinct DeviceName, LocalIP, LocalPort, LocalIPType, RemoteIP, RemoteIPType, RemotePort, ActionType,InitiatingProcessFolderPath
+)
+on $left. DeviceName == $right. DeviceName
+| where LocalIP contains InternetFacingLocalIp
+| where LocalPort == InternetFacingLocalPort
+| project-keep TimeGenerated, DeviceName,PublicIP, LocalIP, LocalPort, RemoteIP, RemotePort, RemoteIPType, ActionType,  InternetFacing*, InitiatingProcessFolderPath 
+| project-away InternetFacingInfo
+| join kind=innerunique  (ThreatIntelligenceIndicator
+    | summarize LatestIndicatorTime = arg_max(TimeGenerated, *) by IndicatorId
+    | where Active == true
+    | where isnotempty(NetworkIP)
+        or isnotempty(EmailSourceIpAddress)
+        or isnotempty(NetworkDestinationIP)
+        or isnotempty(NetworkSourceIP)
+    | extend TI_ipEntity = iff(isnotempty(NetworkIP), NetworkIP, NetworkDestinationIP)
+    | extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(NetworkSourceIP), NetworkSourceIP, TI_ipEntity)
+    | extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(EmailSourceIpAddress), EmailSourceIpAddress, TI_ipEntity))
+    on $left. RemoteIP == $right. TI_ipEntity
+```
