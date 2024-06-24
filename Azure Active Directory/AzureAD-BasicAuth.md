@@ -10,8 +10,7 @@ Use the below queries to identify basic authentication activities in Azure AD
 
 - [Deprecation of Basic authentication in Exchange Online](https://learn.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/deprecation-of-basic-authentication-exchange-online)
 
-
-### Microsoft Sentinel 
+### Microsoft Sentinel
 
 Siginin logs
 
