@@ -25,7 +25,6 @@ Detect device rename using Defender for Endpoint logs
 let DeviceMultipleNames = (
 DeviceInfo
 | where isnotempty( HardwareUuid)
-| sort by TimeGenerated desc  
 | summarize arg_max(Timestamp,*), ComputerNames = make_set(DeviceName), DeviceNameCount = dcount(DeviceName) by HardwareUuid
 | where DeviceNameCount > 1
 | project Timestamp,  ComputerNames, HardwareUuid);
