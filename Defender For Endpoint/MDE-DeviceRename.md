@@ -10,7 +10,7 @@
 
 ### Description
 
-Use the below query to identify Windows devices that have been renamed
+Use the below queries to identify Windows devices that have been renamed
 
 #### References
 
