@@ -35,6 +35,7 @@ This section only includes references to queries that can be mapped in the MITRE
 | T1484.001 | Domain Policy Modification: Group Policy Modification | [AD Group Policy changes on devices](../Defender%20For%20Endpoint/MDE-GroupPolicyModificationEvents.md) |
 | T1562.001 | Impair Defenses: Disable or Modify Tools | [Defender Antivirus Exclusions](../Defender%20For%20Endpoint/MDE-DefenderAntivirusExclusions.md) |
 | T1562.004 | Impair Defenses:  Disable or Modify System Firewall | [Defender Firewall Configurations](../Defender%20For%20Endpoint/DefenderFirewall//MDE-FirewallConfiguration.md) |
+| T1564.012 | Defense Evasion: Hide Artifacts: File/Path Exclusions | [Defender Antivirus Exclusion Enumeration](../Defender%20For%20Endpoint/MDE-DefenderExclusionsEnumerations.md)
 
 ## Credential Access
 
