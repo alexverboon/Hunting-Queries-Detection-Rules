@@ -29,6 +29,7 @@ To assist with detecting and analyzing these changes, the below KQL (Kusto Query
 #### References
 
 - [General Availability - Expansion of SSPR Policy Audit Logging](https://learn.microsoft.com/en-us/entra/fundamentals/whats-new#general-availability---expansion-of-sspr-policy-audit-logging)
+- [Self-service password management](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/reference-audit-activities#self-service-password-management)
 
 ### Microsoft Sentinel
 

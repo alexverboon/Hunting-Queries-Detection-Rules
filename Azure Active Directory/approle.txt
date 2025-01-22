@@ -1,5 +1,0 @@
-AuditLogs
-| where OperationName == "Add app role assignment grant to user"
-| extend AppId = tostring(AdditionalDetails[1].value)
-| extend displayName_ = tostring(TargetResources[0].displayName)
-| extend ObjectId = tostring(TargetResources[0].id)
