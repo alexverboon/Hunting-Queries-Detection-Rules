@@ -22,6 +22,8 @@ To assist with detecting and analyzing these changes, the below KQL (Kusto Query
 
 #### Risk
 
+Misconfigured Microsoft SSPR settings, such as weak authentication methods, inadequate registration requirements, or unrestricted reset access, can lead to unauthorized account recovery and potential security breaches. Monitoring and auditing Microsoft SSPR configurations and usage is critical to ensure compliance with organizational security policies and to mitigate risks effectively.
+
 #### Author
 
 - **Name:Alex Verboon**
