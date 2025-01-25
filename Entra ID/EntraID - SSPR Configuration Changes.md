@@ -1,4 +1,4 @@
-# Entra ID - Self Serfice Password Reset - Configuration Changes
+# Entra ID - Self Service Password Reset - Configuration Changes
 
 ## Query Information
 
