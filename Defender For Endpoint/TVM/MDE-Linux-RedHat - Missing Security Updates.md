@@ -28,12 +28,11 @@ DeviceTvmSoftwareVulnerabilities
 | summarize MissingDevices = make_set(DeviceName) by SoftwareName, RecommendedSecurityUpdate, RecommendedSecurityUpdateId, OSVersionInfo
 | extend TotalMissingKBDevice = array_length(MissingDevices)
 | project ['Bulletin'] = RecommendedSecurityUpdate, ['ID'] = RecommendedSecurityUpdateId, ['Total Exposed devices'] = TotalMissingKBDevice, ['Exposed devices'] = MissingDevices, OSVersionInfo
-
----
+```
 
 Details missing KBs Red Hat Linux
 
----kql
+```kql
 DeviceTvmSoftwareVulnerabilities
 | where SoftwareVendor == @"red_hat"
 | where OSVersion == @"enterprise_linux_7.6"
@@ -48,6 +47,4 @@ DeviceTvmSoftwareVulnerabilities
     on $left.DeviceId == $right.DeviceId
 | summarize MissingKBs = make_set(RecommendedSecurityUpdate) by DeviceName
 | extend TotalMissingKB = array_length(MissingKBs)
-
-
 ```
