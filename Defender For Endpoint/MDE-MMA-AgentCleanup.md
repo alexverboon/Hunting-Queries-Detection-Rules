@@ -10,7 +10,13 @@ Ingestion for MMA will be unchanged until February 1, 2025. After this date, clo
 
 Use the queries below to identify any MMA Agents on your systems that run Defender processes through the MMA Agent or still communiate with the MDE Workspace.
 
+### Update the Query
+
+You will need your Defender for Endpoint Worspace ID. You'll find this by going to the Defender for Endpoint Settings, Onboarding Settnigs, and then select Windows 7 as the OS.
+
 ![WorkspalceID](./mde-downlevel-workspaceid.png)
+
+Update the variable withn the KQL query with your Workspace ID.
 
 ```kql
 let workspaceid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx';
