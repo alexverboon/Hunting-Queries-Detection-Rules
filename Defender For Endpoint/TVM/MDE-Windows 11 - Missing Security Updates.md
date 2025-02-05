@@ -28,11 +28,11 @@ DeviceTvmSoftwareVulnerabilities
 | summarize MissingDevices = make_set(DeviceName) by SoftwareName, RecommendedSecurityUpdate, RecommendedSecurityUpdateId, OSVersionInfo
 | extend TotalMissingKBDevice = array_length(MissingDevices)
 | project ['Bulletin'] = RecommendedSecurityUpdate, ['ID'] = RecommendedSecurityUpdateId, ['Total Exposed devices'] = TotalMissingKBDevice, ['Exposed devices'] = MissingDevices, OSVersionInfo
----
+```
 
 Details missing KBs Windows 11
 
----kql
+```kql
 DeviceTvmSoftwareVulnerabilities
 | where SoftwareVendor == 'microsoft'
 | where SoftwareName == 'windows_11'
