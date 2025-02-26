@@ -8,6 +8,8 @@ Use the below queries to retreive log analytics ingestion quota configuration in
 
 #### References
 
+[Set daily cap on Log Analytics workspace](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/daily-cap)
+
 ### Microsoft Sentinel
 
 ```kql
@@ -32,4 +34,3 @@ Operation
 | extend PreviousQuota = extract(previousQuotaPattern,1,Detail)
 | extend ChangedBy = extract(changedByPattern,1,Detail)
 ```
-
