@@ -8,13 +8,17 @@ When using media to install Windows 11, version 24H2, the device might remain in
 
 Use the below query to identify devices that are potentially affected.
 
-Windows 11 Clients with OS Build 26100.2033
+Windows 11 Clients with OS Build 26100 and Revisions 2033,2161,2314,2454,863,1742
 
 #### References
 
 - [Issues might occur with media which installs the October or November update](https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-24h2#issues-might-occur-with-media-which-installs-the-october-or-november-update)
 
-### Microsoft 365 Defender
+### Credits
+
+[Janic Verboon](https://bsky.app/profile/janicv.bsky.social) Intune Queries
+
+### Microsoft Defender XDR
 
 ```kql
 DeviceTvmSoftwareVulnerabilities
@@ -31,8 +35,27 @@ DeviceInfo
         | where OSPlatform == @"Windows11"
         | where OSVersionInfo == @"24H2"
         | where OSBuild == "26100"
-        | where OsBuildRevision == @"2033")
+        | where OsBuildRevision in ("2033","2161","2314","2454","863","1742")
            on $left.DeviceId == $right.DeviceId
 | summarize MissingKBs = make_set(RecommendedSecurityUpdate) by DeviceName
 | extend TotalMissingKB = array_length(MissingKBs)
+```
+
+### Log Analytics (where you store your Intune Logs)
+
+Find all possible affected devices
+
+```kql
+IntuneDevices 
+| where OS == "Windows"
+| where OSVersion in ("10.0.26100.2033","10.0.26100.2161","10.0.26100.2314","10.0.26100.2454","10.0.26100.863","10.0.26100.1742")
+```
+
+Windows Update for Business Report
+
+```kql
+UCClient 
+| where OSVersion contains "Windows 11"
+| where OSRevisionNumber in ("2033","2161","2314","2454","863","1742")
+| project AzureADDeviceId,DeviceName,OSVersion,OSBuild,OSRevisionNumber
 ```
