@@ -36,10 +36,15 @@ Requestor settings - Default recipients settings (enabled/disabled)
 
 ```kql
 AuditLogs
-| where Category == "RoleManagement"
+| where Category == "RoleManagement" or Category == "GroupManagement"
 | where OperationName == "Update role setting in PIM"
 | extend userPrincipalName = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
-| extend Role = tostring(TargetResources[0].displayName)
+| extend Role = case(
+    Category == 'RoleManagement',tostring(TargetResources[0].displayName),
+    "")
+| extend Group = case(
+    Category  == "GroupManagement", tostring(TargetResources[2].displayName),
+    "")
 | mv-apply item = AdditionalDetails on (
     where tostring(item.key) == "ipaddr"
     | extend ipaddr = tostring(item.value)
@@ -57,6 +62,7 @@ AuditLogs
 | project
     TimeGenerated,
     Role,
+    Group,
     ResultReason,
     ModifiedSettings,
     userPrincipalName,
@@ -71,10 +77,16 @@ Only list events where ***MFA on activation requirement*** was changed
 
 ```kql
 AuditLogs
-| where Category == "RoleManagement"
+| where Category == "RoleManagement" or Category == "GroupManagement"
 | where OperationName == "Update role setting in PIM"
 | extend userPrincipalName = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
-| extend Role = tostring(TargetResources[0].displayName)
+//| extend Role = tostring(TargetResources[0].displayName)
+| extend Role = case(
+    Category == 'RoleManagement',tostring(TargetResources[0].displayName),
+    "")
+| extend Group = case(
+    Category  == "GroupManagement", tostring(TargetResources[2].displayName),
+    "")
 | mv-apply item = AdditionalDetails on (
     where tostring(item.key) == "ipaddr"
     | extend ipaddr = tostring(item.value)
@@ -92,6 +104,7 @@ AuditLogs
 | project
     TimeGenerated,
     Role,
+    Group,
     ResultReason,
     ModifiedSettings,
     userPrincipalName,
