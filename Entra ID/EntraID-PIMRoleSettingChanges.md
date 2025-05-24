@@ -10,7 +10,7 @@
 
 ### Description
 
-Use the below query to retrieve EntraID - Privileged Identity Management - Role Settings Changes
+Use the below query to retrieve EntraID - Privileged Identity Management - Role & Group Settings Changes
 
 MFA on activation requirement (enabled/disabled)
 Ticket info requirement (enabled/disabled)
