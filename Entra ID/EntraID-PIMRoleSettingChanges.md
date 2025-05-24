@@ -31,6 +31,7 @@ Requestor settings - Default recipients settings (enabled/disabled)
 #### References
 
 - [Microsoft Entra Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure)
+- [Entra PIM Roles & Groups Settings Changes - Dashbaord](https://github.com/alexverboon/Entra-PIM-Helpers/blob/630959be8918d7b646e1e958f3d21be446e0c133/Workbook/EntraPIMChanges.json)
 
 ### Microsoft Sentinel
 
