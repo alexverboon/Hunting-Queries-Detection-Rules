@@ -12,21 +12,21 @@
 
 Use the below query to retrieve EntraID - Privileged Identity Management - Role & Group Settings Changes
 
-MFA on activation requirement (enabled/disabled)
-Ticket info requirement (enabled/disabled)
-Approval (enabled/disabled)
-Approval enabled with approvers
-Approver settings - Default recipients settings disabled
-Maximum active assignment duration set to (Days)
-Maximum eligible assignment duration set to (Days)
-MFA on active assignment requirement (enabled/disabled)
-Notification updates in eligible members activate the role - Admin settings - Default recipients settings (enabled/disabled)
-Notification updates in members are assigned as active to the role - Admin settings - Default recipients settings (enabled/disabled)
-Notification updates in members are assigned as eligible to the role - Admin settings - Default recipients settings (enabled/disabled)
-Notification updates in members are assigned as eligible to the role - Admin settings - Default recipients settings (enabled/disabled)
-Permanently active assignments (enabled/disabled)
-Permanently eligible assignments (enableddisabled)
-Requestor settings - Default recipients settings (enabled/disabled)
+- MFA on activation requirement (enabled/disabled)
+- Ticket info requirement (enabled/disabled)
+- Approval (enabled/disabled)
+- Approval enabled with approvers
+- Approver settings - Default recipients settings disabled
+- Maximum active assignment duration set to (Days)
+- Maximum eligible assignment duration set to (Days)
+- MFA on active assignment requirement (enabled/disabled)
+- Notification updates in eligible members activate the role - Admin settings - Default recipients settings (enabled/disabled)
+- Notification updates in members are assigned as active to the role - Admin settings - Default recipients settings (enabled/disabled)
+- Notification updates in members are assigned as eligible to the role - Admin settings - Default recipients settings (enabled/disabled)
+- Notification updates in members are assigned as eligible to the role - Admin settings - Default recipients settings (enabled/disabled)
+- Permanently active assignments (enabled/disabled)
+- Permanently eligible assignments (enableddisabled)
+- Requestor settings - Default recipients settings (enabled/disabled)
 
 #### References
 
