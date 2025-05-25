@@ -50,10 +50,6 @@ AuditLogs
     where tostring(item.key) == "ipaddr"
     | extend ipaddr = tostring(item.value)
     )
-| mv-apply item = AdditionalDetails on (
-    where tostring(item.key) == "UserAgent"
-    | extend UserAgent = tostring(item.value)
-    )
 | extend geo_ip = tostring(geo_info_from_ip_address(ipaddr))
 | sort by TimeGenerated asc 
 | sort by TimeGenerated asc 
@@ -69,7 +65,6 @@ AuditLogs
     userPrincipalName,
     Identity,
     ipaddr,
-    UserAgent,
     geo_ip,
     CorrelationId
 ```
@@ -81,7 +76,6 @@ AuditLogs
 | where Category == "RoleManagement" or Category == "GroupManagement"
 | where OperationName == "Update role setting in PIM"
 | extend userPrincipalName = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
-//| extend Role = tostring(TargetResources[0].displayName)
 | extend Role = case(
     Category == 'RoleManagement',tostring(TargetResources[0].displayName),
     "")
@@ -91,10 +85,6 @@ AuditLogs
 | mv-apply item = AdditionalDetails on (
     where tostring(item.key) == "ipaddr"
     | extend ipaddr = tostring(item.value)
-    )
-| mv-apply item = AdditionalDetails on (
-    where tostring(item.key) == "UserAgent"
-    | extend UserAgent = tostring(item.value)
     )
 | extend geo_ip = tostring(geo_info_from_ip_address(ipaddr))
 | sort by TimeGenerated asc 
@@ -111,7 +101,6 @@ AuditLogs
     userPrincipalName,
     Identity,
     ipaddr,
-    UserAgent,
     geo_ip,
     CorrelationId
     | where ModifiedSettings has_any ("MFA on activation requirement")
