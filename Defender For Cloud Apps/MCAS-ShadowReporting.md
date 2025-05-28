@@ -21,7 +21,7 @@ MCAS Shadown Reporting details by Application
 ```kql
 McasShadowItReporting
 | where TimeGenerated > ago (90d)
-| where StreamName == "Win10 Endpoint Users"
+| where StreamName == "Defender-managed endpoints"
 | summarize Totalbytes = sum(TotalBytes), UploadBytes = sum( UploadedBytes), DownloadBytes = sum(DownloadedBytes), Users = make_set(EnrichedUserName), Devices = make_set(MachineName), IPAddresses = make_set(IpAddress)  by AppName, AppScore
 | extend TotalDevices = array_length(Devices)
 | extend TotalIPAddresses = array_length(IPAddresses)
@@ -37,7 +37,7 @@ MCAS Shadown Reporting details by User
 ```kql
 McasShadowItReporting
 | where TimeGenerated > ago (90d)
-| where StreamName == "Win10 Endpoint Users"
+| where StreamName == "Defender-managed endpoints"
 | summarize Totalbytes = sum(TotalBytes), UploadBytes = sum( UploadedBytes), DownloadBytes = sum(DownloadedBytes), Users = make_set(EnrichedUserName), Devices = make_set(MachineName), IPAddresses = make_set(IpAddress) , Apps = make_set(AppName) by EnrichedUserName
 | extend TotalDevices = array_length(Devices)
 | extend TotalIPAddresses = array_length(IPAddresses)
@@ -47,5 +47,5 @@ McasShadowItReporting
 | extend TotalTraffic = format_bytes(Totalbytes,0,"MB")
 | extend DownloadMB = format_bytes(DownloadBytes,0,"MB")
 | project EnrichedUserName, TotalDevices, TotalIPAddresses, Totalusers,TotalApps, TotalTraffic, UploadMB, DownloadMB, IPAddresses, Devices, Users, Apps
-
 ```
+
