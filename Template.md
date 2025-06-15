@@ -12,16 +12,18 @@
 
 DESCRIPTION
 
-
 #### References
 
+### Author
 
+- **Alex Verboon**
 
-### Microsoft 365 Defender
-
-
-
+## Defender XDR
 
 ```kql
 ```
 
+## Sentinel
+
+```kql
+```

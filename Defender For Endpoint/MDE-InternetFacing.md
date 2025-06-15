@@ -4,7 +4,7 @@
 
 ### Description
 
-Use the below queries to gather inforamtion about internet facing devcies
+Use the below queries to gather inforamtion about internet facing devcies.
 
 #### References
 
