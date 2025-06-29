@@ -39,4 +39,3 @@ OAuthAppInfo
 | order by High desc, Medium desc, Low desc
 
 ```
-
