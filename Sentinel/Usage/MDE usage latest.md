@@ -1,10 +1,21 @@
-// The below query attempts to get the avg Size in MB per client that is send from Microosoft Defender for Endpoint to Azure Sentinel when using the M365 Defender connector
-// The calculation is done as following:
-// 1. Collect the Usage data for the specified table from the Usage table, for example 'DeviceFileEvents'
-// 2. Collect the total # of devices that submitted information into the specified table, for example 'DeviceFileEvents"
-// 3 Divide the total BillableDataGB per DataType by the total number of devices that send data to get the avg MB send by client
-// 4 finally 'uniion' all tables
+# Sentinel Usage - Defender for Endpoint Log Ingestion
 
+## Query Information
+
+### Description
+
+Ever wondered how much MB clients ingest on average per day?
+
+The below query attempts to get the avg Size in MB per client that is send from Microosoft Defender for Endpoint to Azure Sentinel when using the Microsoft Defender XDR connector
+The calculation is done as following:
+1. Collect the Usage data for the specified table from the Usage table, for example **DeviceFileEvents**.
+2. Collect the total # of devices that submitted information into the specified table, for example 'DeviceFileEvents"
+3. Divide the total BillableDataGB per DataType by the total number of devices that send data to get the avg MB send by client
+4. finally 'uniion' all tables
+
+#### References
+
+```kql
 let xagotime = 32d;
 let xstarttime = 31d;
 // File Events
@@ -132,3 +143,4 @@ union xDeviceCertInfo, xDeviceevents, xDeviceImageLoadEvents, xDeviceInfo, xDevi
 // calculate avg per device per data type per day
 | summarize AvgMBClient = sum(AverageMBClient) by bin(TimeGenerated,1d) , DataType
 | render columnchart 
+```
