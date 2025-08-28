@@ -33,6 +33,7 @@ MDEDeviceName = tolower(split(DeviceName,".")[0]),
   OnboardingStatus  
   | join kind=leftouter hint.remote=left (arcservers)
   on $left. MDEDeviceName == $right.ArcComputerName
+  | where isnotempty(ArcComputerName) // Remove devices that are not Arc-enabled, this could include a scenario like non-persistent VDIs with MDE
   | project ArcComputerName, MDEDeviceName, ArcOSName, MDEOSPlatform, OnboardingStatus, ArcLocation, resourceGroup, subscriptionId
 
 ```
