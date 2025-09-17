@@ -38,5 +38,3 @@ on $left. TargetAccountUpn == $right. AccountUpn
 | where IsSensitive == "1" 
 | project Timestamp , ActionType,Operation, ChangedGroup,Actor, ActorUpn,LegitActor, TargetObjectIdentity,TargetAccountUpn, AccountUpn, AccountObjectId, AccountSid,TargetAccountDisplayName, IsAccountEnabled , TargetObjectType  , IsSensitive, DestinationDeviceName, ReportId 
 ```
-
-
