@@ -31,63 +31,96 @@ This KQL query detects obfuscated or encoded command lines in process events by 
 
 ```sql
 // --- Regex definitions ---
-let rxNonAscii    = @"[^\x20-\x7E]";                                       // Any character outside printable ASCII range
-let rxSuperCap    = @"([\u02B0-\u02FF\u1D2C-\u1D7F\u2070-\u209F])";       // Superscript / modifier Unicode blocks (with capturing group)
-let rxB64Presence = @"[A-Za-z0-9]{0,}[+/][A-Za-z0-9+/]{27,}={0,2}";       // Base64-like string (contains + or /, 28+ chars)
-let rxB64Extract  = @"([A-Za-z0-9]{0,}[+/][A-Za-z0-9+/]{27,}={0,2})";     // Same as above but with capturing group for extract()
+let rxNonAscii        = @"[^\x20-\x7E]";                                      // Any char outside printable ASCII
+let rxSuperCap        = @"([\u02B0-\u02FF\u1D2C-\u1D7F\u2070-\u209F])";       // Superscript / modifier blocks
+let rxDashVariants    = @"([\u2010-\u2015\u2212\uFE58\uFE63\uFF0D])";         // En/Em/figure/minus etc. dash look-alikes
+// Base64 detectors: standard + URL-safe, length threshold tunable (20/24/28)
+let rxB64Presence     = @"[A-Za-z0-9+/]{20,}={0,2}";                          // standard Base64 presence
+let rxB64Extract      = @"(^|[^A-Za-z0-9+/=])([A-Za-z0-9+/]{20,}={0,2})([^A-Za-z0-9+/=]|$)"; // capture group 2
+let rxB64UrlPresence  = @"[A-Za-z0-9_-]{20,}={0,2}";                          // URL-safe Base64 presence
+let rxB64UrlExtract   = @"(^|[^A-Za-z0-9\-_=])([A-Za-z0-9_-]{20,}={0,2})([^A-Za-z0-9\-_=]|$)"; // capture group 2
 // --- Source events ---
 DeviceProcessEvents
-| where Timestamp >= ago(7d)                                               // Limit to last 7 days for performance
-| where isnotempty(ProcessCommandLine)                                     // Only processes with a command line
-| where InitiatingProcessFileName has_any ("cmd.exe","PowerShell.exe","notepad.exe") // Focus on common script interpreters
-// --- Stage 1: quick pre-checks (cheap regex tests, no captures) ---
-| extend HasNonAscii = ProcessCommandLine matches regex rxNonAscii         // Detect any non-ASCII characters
-| extend HasSuper    = ProcessCommandLine matches regex rxSuperCap         // Detect superscript Unicode characters
-| extend HasB64Quick = ProcessCommandLine matches regex rxB64Presence      // Detect Base64-like pattern presence
-| where HasNonAscii or HasSuper or HasB64Quick                             // Only continue if any indicator is present
-// --- Stage 2: extract actual suspicious content ---
-| extend NonAsciiChars    = iif(HasNonAscii, extract_all(@"([^\x20-\x7E])", tostring(ProcessCommandLine)), dynamic([])) // Extract all non-ASCII chars
-| extend SuperscriptChars = iif(HasSuper,    extract_all(rxSuperCap,           tostring(ProcessCommandLine)), dynamic([])) // Extract all superscripts
-| extend Base64Candidate1 = iif(HasB64Quick, extract(rxB64Extract, 1, ProcessCommandLine), "")                            // Extract first Base64-like sequence
-// --- Filter out benign cases (paths, files, PowerShell -File parameter) ---
+| where TimeGenerated >= ago(7d)
+| where isnotempty(ProcessCommandLine)
+| where InitiatingProcessFileName has_any ("cmd.exe","PowerShell.exe","notepad.exe")
+// --- Stage 1: quick pre-checks ---
+| extend HasNonAscii = ProcessCommandLine matches regex rxNonAscii
+| extend HasSuper    = ProcessCommandLine matches regex rxSuperCap
+| extend HasDashVar  = ProcessCommandLine matches regex rxDashVariants
+| extend HasB64Quick = (ProcessCommandLine matches regex rxB64Presence)
+                    or (ProcessCommandLine matches regex rxB64UrlPresence)
+| where HasNonAscii or HasSuper or HasDashVar or HasB64Quick
+// --- Stage 2: extract suspicious content ---
+| extend NonAsciiChars    = iif(HasNonAscii, extract_all(@"([^\x20-\x7E])", tostring(ProcessCommandLine)), dynamic([]))
+| extend SuperscriptChars = iif(HasSuper,    extract_all(rxSuperCap,           tostring(ProcessCommandLine)), dynamic([]))
+| extend DashVarChars     = iif(HasDashVar,  extract_all(rxDashVariants,       tostring(ProcessCommandLine)), dynamic([]))
+// Take group 2 because patterns are (prefix)(Base64)(suffix)
+| extend Base64Candidate1 = iif(HasB64Quick,
+      coalesce(
+        extract(rxB64Extract,     2, ProcessCommandLine),
+        extract(rxB64UrlExtract,  2, ProcessCommandLine),
+        ""
+      ),
+      ""
+)
+// --- Filter out benign cases (paths, URLs, or PowerShell -File) ---
 | extend Base64Candidate1 = iif(
-      Base64Candidate1 matches regex @"[\\/:\.]"                              // likely path or URL
-      or ProcessCommandLine matches regex @"(?i)\b-File\b",                   // PowerShell script file parameter
-      "", Base64Candidate1)
+      Base64Candidate1 matches regex @"[\\/:\.]"
+      or ProcessCommandLine matches regex @"(?i)\b-File\b",
+      "",
+      Base64Candidate1
+    )
 // --- Flags & counters ---
-| extend EncodedFlag      = iif(isnotempty(Base64Candidate1), 1, 0)           // Flag if Base64 candidate found
-| extend NonAsciiCount    = array_length(NonAsciiChars)                       // Count non-ASCII characters
-| extend SuperScriptCount = iif(array_length(SuperscriptChars) > 0, 1, 0)     // Flag if superscript present
-// --- Stage 3: decode Base64 candidate (UTF-8 first, fallback to UTF-16LE) ---
-| extend DecodedUtf8 = iif(EncodedFlag==1, base64_decode_tostring(Base64Candidate1), "")  // Decode as UTF-8
-| extend Bytes       = iif(EncodedFlag==1 and isempty(DecodedUtf8),                       // If not readable, decode to byte array
-                           base64_decode_toarray(Base64Candidate1), dynamic(null))
-| extend Len         = array_length(Bytes)                                                // Get byte array length
-// --- Decode UTF-16LE manually if needed ---
+| extend EncodedFlag       = iif(isnotempty(Base64Candidate1), 1, 0)
+| extend NonAsciiCount     = array_length(NonAsciiChars)
+| extend SuperScriptCount  = iif(array_length(SuperscriptChars) > 0, 1, 0)
+| extend DashVariantCount  = array_length(DashVarChars)
+// --- Normalize Base64 for decoding (handle URL-safe - and _ ) ---
+| extend B64Std = iif(EncodedFlag == 1,
+                      replace_string(replace_string(Base64Candidate1, "-", "+"), "_", "/"),
+                     "")
+// --- Stage 3: decode Base64 (UTF-8 first, fallback to UTF-16LE) ---
+| extend DecodedUtf8 = iif(EncodedFlag==1, base64_decode_tostring(B64Std), "")
+| extend Bytes       = iif(EncodedFlag==1 and isempty(DecodedUtf8),
+                           base64_decode_toarray(B64Std),
+                           dynamic(null))
+| extend Len         = array_length(Bytes)
+// --- UTF-16LE fallback (manual) ---
 | mv-apply idx = range(0, iif(isnotnull(Len) and Len >= 2, Len - 2, -1), 2) on (
     extend i = toint(idx)
     | where isnotnull(Bytes) and i + 1 < Len
-    | extend lo = toint(Bytes[i]), hi = toint(Bytes[i + 1])                               // Low + high byte pair
-    | extend cp = lo + 256*hi                                                             // Combine to code point
-    | where cp != 0 and cp >= 32 and cp <= 126                                            // Keep printable ASCII only
+    | extend lo = toint(Bytes[i]), hi = toint(Bytes[i + 1])
+    | extend cp = lo + 256*hi
+    | where cp != 0 and cp >= 32 and cp <= 126
     | summarize Codepoints = make_list(cp)
 )
-| extend DecodedUtf16 = iif(isnull(Codepoints), "", unicode_codepoints_to_string(Codepoints)) // Convert code points to string
-| extend Decoded      = iif(isnotempty(DecodedUtf8), DecodedUtf8, DecodedUtf16)               // Prefer UTF-8, else UTF-16LE
-// --- Stage 4: classify and label obfuscation types ---
+| extend DecodedUtf16 = iif(isnull(Codepoints), "", unicode_codepoints_to_string(Codepoints))
+| extend Decoded      = iif(isnotempty(DecodedUtf8), DecodedUtf8, DecodedUtf16)
+// --- Stage 4: classify & label obfuscation types ---
 | extend HasUnicode = NonAsciiCount > 0
-| extend ObfTypes = set_difference(                                                        // Combine all triggered indicators
+| extend ObfTypes = set_difference(
     pack_array(
-      iif(EncodedFlag==1,       "EncodedCommand",    ""),                                   // Base64-like or encoded
-      iif(SuperScriptCount > 0, "Superscript",       ""),                                   // Unicode superscripts
-      iif(HasUnicode,           "Unicode/Non-ASCII", "")                                    // Other non-ASCII content
+      iif(EncodedFlag==1,        "EncodedCommand",    ""),
+      iif(SuperScriptCount > 0,  "Superscript",       ""),
+      iif(DashVariantCount  > 0, "Unicode Dash",      ""),
+      iif(HasUnicode,            "Unicode/Non-ASCII", "")
     ),
     pack_array("")
 )
-| extend ObfCount = array_length(ObfTypes)                                                 // Number of detected obfuscation signals
-| where ObfCount > 0                                                                       // Keep only suspicious entries
+| extend ObfCount = array_length(ObfTypes)
+| where ObfCount > 0
 // --- Final output ---
-| project Timestamp, DeviceName, FileName, InitiatingProcessFileName,                      // Basic identifiers
-          ProcessCommandLine, Base64Candidate1, Decoded,                                   // Original + decoded command lines
-          NonAsciiCount, SuperScriptCount, ObfTypes                                        // Detection details
+| project TimeGenerated,
+          DeviceName,
+          FileName,
+          InitiatingProcessFileName,
+          ProcessCommandLine,
+          ObfTypes,
+          Base64Candidate1,
+          Decoded,
+          NonAsciiCount,
+          SuperScriptCount,
+          DashVariantCount
+| where FileName <> "auditpol.exe"
 ```
