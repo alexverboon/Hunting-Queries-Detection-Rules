@@ -22,6 +22,7 @@ This KQL query detects obfuscated or encoded command lines in process events by 
 
 - [Bypassing Detections with Command-Line Obfuscation](https://www.wietzebeukema.nl/blog/bypassing-detections-with-command-line-obfuscation)
 - [Windows Command-Line Obfuscation](https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation)
+- [Malicious Encoded PowerShell: Detecting, Decoding & Modeling](https://detect.fyi/malicious-encoded-powershell-detecting-decoding-modeling-321fd322c6ec)
 
 ### Author
 
