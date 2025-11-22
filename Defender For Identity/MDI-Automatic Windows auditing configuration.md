@@ -10,6 +10,7 @@ Use the below KQL query to see the events related to automatic event auditing se
 
 #### References
 
+- [Defender for Identity — Automatic Windows event auditing configuration](https://medium.com/@verboonalex/defender-for-identity-automatic-windows-event-auditing-configuration-0e7ed8e89f62)
 - [MC1187403 - Automatic Windows event auditing configuration now available for unified sensors (V3.x)](https://mc.merill.net/message/MC1187403)
 - [Configure audit policies for Windows event logs](https://learn.microsoft.com/en-us/defender-for-identity/deploy/configure-windows-event-collection#configure-windows-event-auditing-with-the-defender-for-identity-sensor-v3x)
 - [Configure Windows event auditing](https://learn.microsoft.com/en-us/defender-for-identity/deploy/configure-windows-event-collection#configure-windows-event-auditing-with-the-defender-for-identity-sensor-v3x)
