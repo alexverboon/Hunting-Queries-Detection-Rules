@@ -1,5 +1,8 @@
 # Entra ID - Oauth App Information
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Released](https://img.shields.io/badge/status-released-brightgreen.svg)
+
 ## Query Information
 
 ### Description
@@ -20,8 +23,10 @@ List relevant information from the OAutahAppInfo Table and count the permissions
 
 ```kql
 OAuthAppInfo 
+| summarize arg_max(TimeGenerated,*) by OAuthAppId
 | mv-expand Permissions
 | extend Permission = tostring(parse_json(Permissions.PermissionValue))
+| extend PermPrivilegeLevel = tostring(parse_json(Permissions.PrivilegeLevel))
 | project
     AppName,
     PrivilegeLevel,
@@ -29,12 +34,16 @@ OAuthAppInfo
     AppStatus,
     ConsentedUsersCount,
     IsAdminConsented,
-    AppOrigin
+    AppOrigin,
+    ServicePrincipalId,
+    Permissions,
+    PermPrivilegeLevel
 | summarize
-    Permissions = make_set(Permission),
-    Low = countif(PrivilegeLevel == "Low"),
-    Medium = countif(PrivilegeLevel == "Medium"),
-    High = countif(PrivilegeLevel == "High")
+    //PrivLevels = make_set(PermPrivilegeLevel),
+    Low = countif(PermPrivilegeLevel == "Low"),
+    Medium = countif(PermPrivilegeLevel == "Medium"),
+    High = countif(PermPrivilegeLevel == "High"),
+    NA = countif(PermPrivilegeLevel == "NA")
     by AppName, ConsentedUsersCount, IsAdminConsented, AppStatus, AppOrigin
 | order by High desc, Medium desc, Low desc
 
