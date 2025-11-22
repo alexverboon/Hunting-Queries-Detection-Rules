@@ -48,3 +48,14 @@ OAuthAppInfo
 | order by High desc, Medium desc, Low desc
 
 ```
+
+External OAuth Apps and their external Tenant ID information
+
+```kql
+OAuthAppInfo
+| where isnotempty( AppOwnerTenantId)
+| where AppOrigin == 'External'
+| summarize arg_max(TimeGenerated,*) by OAuthAppId
+| project AppName, VerifiedPublisher, ServicePrincipalId, OAuthAppId, PrivilegeLevel, Permissions, AppOrigin, AppOwnerTenantId
+| extend VerifiedPublisher_displayName = tostring(parse_json(VerifiedPublisher)["displayName"])
+```
