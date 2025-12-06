@@ -66,6 +66,21 @@ on $left. IdentityId == $right. IdentityId
 | where AccountStatus != @"Disabled"
 ```
 
+Visualize the result in Year buckets (add the kql below to the above query)
+
+```kql
+| where isnotnull(LastPasswordChangeTime)
+| extend PasswordAgeBucket =
+    case(
+        DaysSinceLastPasswordChange <= 365, "0-1 years",
+        DaysSinceLastPasswordChange <= 2*365, "1-2 years",
+        DaysSinceLastPasswordChange <= 5*365, "2-5 years",
+        DaysSinceLastPasswordChange <= 10*365, "5-10 years",
+        "10+ years")
+| summarize Accounts = dcount(IdentityId) by PasswordAgeBucket
+| sort by Accounts desc
+| render columnchart  
+```
 Filter the results by Built-in Administrator, Guest accounts, krbgt and Entra ID Synch accounts.
 
 ```kql
