@@ -1,5 +1,8 @@
 # Defender for Identity - Automatic Windows auditing configuration
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+
 ## Query Information
 
 ### Description
