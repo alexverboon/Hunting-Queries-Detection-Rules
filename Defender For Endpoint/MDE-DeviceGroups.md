@@ -22,10 +22,10 @@ This query identifies Windows 10 and Windows 11 devices across different device 
 Total Devices by OS per Device Group
 
 ```kql
-let OS = dynamic(["Windows10","Windows11"]);
+//let OS = dynamic(["Windows10","Windows11"]);
 DeviceInfo
 | where TimeGenerated > ago(30d)
-| where OSPlatform has_any (OS)
+//| where OSPlatform has_any (OS)
 | where OnboardingStatus == 'Onboarded'
 | summarize arg_max(TimeGenerated,*) by DeviceId
 | summarize DeviceCount = count() by OSPlatform, MachineGroup
@@ -36,12 +36,35 @@ DeviceInfo
 Detailed list of devices and device groups.
 
 ```kql
-let OS = dynamic(["Windows10","Windows11"]);
+//let OS = dynamic(["Windows10","Windows11"]);
 DeviceInfo
 | where TimeGenerated > ago(30d)
-| where OSPlatform has_any (OS)
+//| where OSPlatform has_any (OS)
 | where OnboardingStatus == 'Onboarded'
 | summarize arg_max(TimeGenerated,*) by DeviceId
 | project MachineGroup, OSPlatform, DeviceName, DeviceId, LoggedOnUsers
 | order by MachineGroup asc, OSPlatform asc, DeviceName asc
+```
+
+Device group overview with count on OnboardingStatus
+
+```kql
+DeviceInfo
+| summarize arg_max(Timestamp,*) by DeviceId
+| summarize Onboarded = countif(OnboardingStatus == 'Onboarded'), 
+CanBeOnboarded = countif(OnboardingStatus == 'Can be onboarded'), 
+Unsupported = countif(OnboardingStatus == 'Unsupported'),
+InsufficientInfo = countif(OnboardingStatus == 'Insufficient info') by MachineGroup
+| extend Total = Onboarded + Unsupported + CanBeOnboarded + InsufficientInfo
+//| where MachineGroup == "UnassignedGroup"
+```
+
+Detailed device information about unassigned onboarded devices
+
+```kql
+DeviceInfo
+| summarize arg_max(Timestamp,*) by DeviceId
+//| summarize dcount(DeviceName) by MachineGroup, OnboardingStatus
+| where MachineGroup == "UnassignedGroup" and OnboardingStatus == "Onboarded"
+| project Timestamp, DeviceId, DeviceName, MachineGroup, OSPlatform
 ```
