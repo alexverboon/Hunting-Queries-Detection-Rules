@@ -32,3 +32,12 @@ IdentityInfo
 | where SourceProvider == @"ActiveDirectory"
 | summarize arg_max(Timestamp,*) by OnPremSid
 ```
+
+```kql
+IdentityInfo
+| summarize arg_max(Timestamp,*) by AccountName
+| project AccountName, DistinguishedName
+| extend OUPath = extract(@"CN=[^,]+,(.*)", 1, DistinguishedName)
+| where OUPath contains "OU=ServiceAccounts"
+| distinct OUPath
+```

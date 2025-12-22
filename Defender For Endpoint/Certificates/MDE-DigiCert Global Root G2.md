@@ -13,9 +13,14 @@ The below KQL queries assist in identifying devices that don't have the DigiCert
 - Query 2: Same as the first query but enriched with missing security updates information when available.
 - Query 3: Devices that have no Defender TVM Certificate Invetory Data
 
+> To use this query and retrieve data from the *DeviceTvmCertificateInfo* table you'll require Microsoft Defender Vulnerability Management Standalone or if you're already a Microsoft Defender for Endpoint Plan 2 customer, the Defender Vulnerability Management add-on.
+
 #### References
 
 - [MC1193408 - (Update)Action Required: Trust DigiCert Global Root G2 Certificate Authority for using Entra services by January 7, 2026](https://mc.merill.net/message/MC1193408)
+- [Microsoft Defender Vulnerability Management - Certificate inventory](https://learn.microsoft.com/en-us/defender-vulnerability-management/tvm-certificate-inventory)
+- [ConfigMgr - Connectivity issues if the DigiCert Global Root G2 root certificate is not installed](https://learn.microsoft.com/en-us/troubleshoot/mem/configmgr/setup-migrate-backup-recovery/connectivity-issues-digicert-global-root-g2-not-installed)
+- [DigiCert Trusted Root Authority Certificates](https://knowledge.digicert.com/general-information/digicert-trusted-root-authority-certificates)
 
 ### Author
 

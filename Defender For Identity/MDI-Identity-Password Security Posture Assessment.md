@@ -81,6 +81,7 @@ Visualize the result in Year buckets (add the kql below to the above query)
 | sort by Accounts desc
 | render columnchart  
 ```
+
 Filter the results by Built-in Administrator, Guest accounts, krbgt and Entra ID Synch accounts.
 
 ```kql
@@ -112,4 +113,61 @@ on $left. IdentityId == $right. IdentityId
 | where tolower(AccountName) in ("krbtgt", "administrator","guest","admin") or tolower(AccountName) startswith "msol_"
                                                                     or tolower(AccountName) startswith "AAD_"
                                                                     or tolower(AccountName) startswith "ADSync"
+```
+
+Extend results with last logon date from Active Diectory and/or Entra ID
+
+```kql
+let lastADLogon = IdentityLogonEvents
+| where TimeGenerated > ago(90d)
+| where Application == @"Active Directory"
+| summarize arg_max(TimeGenerated,*) by AccountUpn
+| extend LastADLogon = TimeGenerated
+| extend LastADUpn = tolower(AccountUpn)
+| project LastADLogon, LastADUpn;
+let lastEntraLogon = SigninLogs
+| where TimeGenerated > ago(90d)
+| summarize arg_max(TimeGenerated,*) by UserPrincipalName
+| extend LastEntraLogon = TimeGenerated
+| extend LastEntraUpn = tolower(UserPrincipalName)
+| project LastEntraLogon, LastEntraUpn;
+let accountinfo = IdentityAccountInfo
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated,*) by IdentityId
+| extend DaysSinceLastPasswordChange =
+    iff(isnull(LastPasswordChangeTime), int(null),
+        datetime_diff('day', now(), LastPasswordChangeTime))
+| extend YearsSinceLastPasswordChange =
+    iff(isnull(LastPasswordChangeTime), int(null),
+        datetime_diff('year', now(), LastPasswordChangeTime))   
+| extend Sensitive = array_index_of(Tags, "Sensitive")   != -1
+| extend SensitiveLabel = iff(Sensitive == 1, "🟥 Sensitive", "⬜ Not Sensitive")
+| project IdentityId,AccountUpn, AccountStatus, LastPasswordChangeTime,DaysSinceLastPasswordChange,YearsSinceLastPasswordChange, Sid, Sensitive, SensitiveLabel;
+let IdInfo = IdentityInfo
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated,*) by IdentityId
+| extend PasswordNeverExpires = array_index_of(UserAccountControl, "PasswordNeverExpires")   != -1,
+         PasswordNotRequired = array_index_of(UserAccountControl, "PasswordNotRequired")   != -1
+| extend OUPath = extract(@"CN=[^,]+,(.*)", 1, DistinguishedName)
+| project IdentityId,AccountName, AccountDomain, AccountDisplayName, OnPremSid, OnPremObjectId, AccountUpn, PasswordNeverExpires, PasswordNotRequired,Type, OUPath;
+IdInfo
+| join kind=leftouter (accountinfo)
+on $left. IdentityId == $right. IdentityId
+| extend AccountUpn = tolower(AccountUpn)
+| project IdentityId, AccountName, AccountStatus,AccountDomain, AccountDisplayName,AccountUpn,Sensitive,SensitiveLabel,LastPasswordChangeTime, DaysSinceLastPasswordChange, YearsSinceLastPasswordChange, PasswordNeverExpires, PasswordNotRequired,Type, OUPath
+| sort by DaysSinceLastPasswordChange desc 
+| where AccountStatus != @"Disabled"
+| join kind= leftouter (lastADLogon)
+on $left. AccountUpn == $right. LastADUpn
+| join kind=leftouter (lastEntraLogon)
+on $left. AccountUpn == $right. LastEntraUpn
+| where Type != @"ServiceAccount"
+| extend GenericLastLogon =
+    case(
+        isnull(LastADLogon) and isnull(LastEntraLogon), datetime(null),
+        isnull(LastADLogon), LastEntraLogon,
+        isnull(LastEntraLogon), LastADLogon,
+        max_of(LastADLogon, LastEntraLogon)
+    )
+| where GenericLastLogon < ago(89d) or isempty( GenericLastLogon)
 ```
