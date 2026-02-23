@@ -13,7 +13,7 @@
 
 ### Description
 
-The below query pulls the data from the loldrivers.io dataset and joins it with ***[AsrVulnerableSignedDriverBlocked]***(https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference#block-abuse-of-exploited-vulnerable-signed-drivers) events both on SHA1 and SHA256 values since there are some missing SHA1 or SHA256 values in LOLDrivers.
+The below query pulls the data from the loldrivers.io dataset and joins it with [AsrVulnerableSignedDriverBlocked](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference#block-abuse-of-exploited-vulnerable-signed-drivers) events both on SHA1 and SHA256 values since there are some missing SHA1 or SHA256 values in LOLDrivers.
 
 #### References
 
