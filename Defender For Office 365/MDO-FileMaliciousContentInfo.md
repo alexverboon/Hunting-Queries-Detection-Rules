@@ -13,7 +13,6 @@ The FileMaliciousContentInfo table in the advanced hunting schema contains infor
 
 - [FileMaliciousContentInfo (Preview)](https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-filemaliciouscontentinfo-table)
 
-
 ### Author
 
 - **Alex Verboon**
