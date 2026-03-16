@@ -55,3 +55,23 @@ CloudAppEvents
     )
 | project TimeGenerated, Setting,Configuration,Description
 ```
+
+```kql
+EmailEvents
+| where isnotempty( ForwardingInformation)
+| extend ForwardingType = parse_json(ForwardingInformation)["ForwardingType"]
+| extend ForwardingUser = parse_json(ForwardingInformation)["ForwardingUser"]
+| extend SenderIPAddress = coalesce(SenderIPv4, SenderIPv6,"")
+| project Timestamp, SenderFromAddress, SenderFromDomain,SenderMailFromAddress, SenderMailFromDomain, RecipientEmailAddress, ForwardingType, ForwardingUser, SenderIPAddress
+```
+
+```kql
+EmailEvents
+| where isnotempty( ForwardingInformation)
+| extend ForwardingType = parse_json(ForwardingInformation)["ForwardingType"]
+| extend ForwardingUser = parse_json(ForwardingInformation)["ForwardingUser"]
+| extend SenderIPAddress = coalesce(SenderIPv4, SenderIPv6,"")
+| extend IPGeo = geo_info_from_ip_address(SenderIPAddress)
+| extend IPcountry = tostring(IPGeo.country)
+| project TimeGenerated, SenderFromAddress, SenderFromDomain,SenderMailFromAddress, SenderMailFromDomain, RecipientEmailAddress, ForwardingType, ForwardingUser, SenderIPAddress, IPcountry
+```
