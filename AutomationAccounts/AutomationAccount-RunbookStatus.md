@@ -1,5 +1,7 @@
 # Azure Automation Account - Runbook Job Status
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### Description
