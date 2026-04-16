@@ -37,3 +37,19 @@ Show unique ActionTypes
 DisruptionAndResponseEvents
 | distinct ActionType
 ```
+
+Show failed Actions
+
+```kql
+CloudAppEvents
+| where ActionType == @"RemediationActionAdded"
+| extend ResultStatus = parse_json(RawEventData)["ResultStatus"]
+| where ResultStatus == "Failed"
+| extend Workload = parse_json(RawEventData)["Workload"]
+| extend ImpactedUserName = parse_json(RawEventData)["ImpactedUserName"]
+| extend ResultDescription = tostring(parse_json(RawEventData)["ResultDescription"])
+| project TimeGenerated, Workload, ImpactedUserName, ResultDescription
+```
+
+DisruptionAndResponseEvents 
+| where ActionType == @"GroupPolicyHardeningPolicyApplied"

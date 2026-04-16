@@ -1,0 +1,12 @@
+CommonSecurityLog
+| where TimeGenerated > ago(30d)
+| where _IsBillable == true
+| summarize TotalVolumeGBLog = round(sum(_BilledSize/1024/1024/1024),2)  by bin(TimeGenerated, 1d) , DeviceVendor
+| summarize sum(TotalVolumeGBLog) by bin(TimeGenerated,1d), DeviceVendor
+| evaluate pivot(DeviceVendor, sum(sum_TotalVolumeGBLog)) 
+| render timechart 
+
+
+AADNonInteractiveUserSignInLogs
+| where _IsBillable == true
+| summarize TotalVolumeGBLog = round(sum(_BilledSize/1024/1024/1024),2)  by bin(TimeGenerated, 1d), UserPrincipalName

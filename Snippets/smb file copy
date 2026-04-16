@@ -1,0 +1,7 @@
+IdentityDirectoryEvents
+| where ActionType == @"SMB file copy"
+| extend FileName = tostring(parse_json(AdditionalFields)["FileName"])
+| extend FilePath = tostring(parse_json(AdditionalFields)["FilePath"])
+| extend FileSize = toint(parse_json(AdditionalFields)["FileSize"])
+| extend FROM_DEVICE = parse_json(AdditionalFields)["FROM.DEVICE"]
+| project Timestamp, FileName, FilePath,FileSize, DestinationDeviceName, DestinationIPAddress, DestinationPort, ISP, FROM_DEVICE, AdditionalFields

@@ -1,0 +1,9 @@
+DeviceLogonEvents
+| where ActionType == "LogonFailed"
+| project TimeGenerated,DeviceName, AccountName,AccountDomain,  ActionType, FailureReason, Protocol, LogonType,RemoteIP, RemoteIPType, RemotePort, MachineGroup
+| where RemoteIPType == "Public"
+| extend geoinfo =  geo_info_from_ip_address(RemoteIP)
+| extend country = tostring(geoinfo.country)
+| extend city = tostring(geoinfo.city)
+| extend state = tostring(geoinfo.state)
+| summarize count() by DeviceName, AccountName

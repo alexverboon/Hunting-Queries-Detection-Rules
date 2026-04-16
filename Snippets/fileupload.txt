@@ -1,0 +1,26 @@
+let IncTitle = dynamic(["New executable via Office FileUploaded Operation"]);
+let execuploadusers = (
+SecurityIncident
+| where TimeGenerated > ago(180d)
+| where Title has_any (IncTitle)
+| summarize arg_max(TimeGenerated,*) by IncidentNumber
+| mv-expand AlertIds
+| extend AlertId = tostring(AlertIds)
+| join  (SecurityAlert)
+on $left. AlertId == $right. SystemAlertId
+| mv-expand parse_json(Entities)
+| extend EType = tostring((Entities.Type))
+| where EType == 'account'
+| extend User = tostring(Entities.DisplayName)
+| distinct User);
+let execExt = dynamic(['exe', 'inf', 'gzip', 'cmd', 'bat']);
+OfficeActivity
+| where TimeGenerated >= ago(180d)
+| where Operation =~ 'FileUploaded'
+| where SourceFileExtension has_any (execExt)
+| where UserId in (execuploadusers)
+| extend geoinfo = geo_info_from_ip_address(ClientIP)
+| extend country = tostring(geoinfo.country)
+| extend city = tostring(geoinfo.city)
+| extend state = tostring(geoinfo.state)
+| project TimeGenerated, OfficeWorkload, UserId, ClientIP, Site_Url, SourceFileName, SourceFileExtension, country, city

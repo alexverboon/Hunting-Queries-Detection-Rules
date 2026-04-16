@@ -1,0 +1,19 @@
+
+let IncTitle = dynamic([
+"Atypical travel involving one user","Correlate Unfamiliar sign-in properties and atypical travel alerts",
+"Preview: Impossible travel to atypical locations leading to Suspicious inbox manipulation rule",
+"Impossible Travel involving one user",
+"Impossible travel activity involving one user",
+"Atypical travel involving one user"
+]);
+SecurityIncident
+| where TimeGenerated > ago(30d)
+| where Title has_any (IncTitle)
+| summarize arg_max(TimeGenerated,*) by IncidentNumber
+| mv-expand AlertIds
+| extend AlertId = tostring(AlertIds)
+| join  (SecurityAlert)
+on $left. AlertId == $right. SystemAlertId
+| mv-expand parse_json(Entities)
+| extend EType = tostring((Entities.Type))
+| where EType == "account"

@@ -1,0 +1,7 @@
+CloudAppEvents
+| where ActionType == @"DefenseEvasion"
+| extend AlertDisplayName = parse_json(RawEventData)["AlertDisplayName"]
+| extend MachineFQDN = parse_json(RawEventData)["MachineFQDN"]
+| extend MachineName = parse_json(RawEventData)["MachineName"]
+| extend AlertUri = parse_json(RawEventData)["AlertUri"]
+| project TimeGenerated, AlertDisplayName, MachineName, AlertUri

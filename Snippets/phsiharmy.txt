@@ -1,0 +1,8 @@
+let urlblocklist = (externaldata(url:string) [@"https://phishing.army/download/phishing_army_blocklist.txt"]
+with (format="txt",ignoreFirstRecord=true))
+| where url !startswith "#"
+| where isnotempty(url);
+urlblocklist
+//| where url endswith "zip" or url endswith "live"
+| extend TLD = tostring(split(extract(@"\.([a-zA-Z]{2,}|[a-zA-Z]{2}\.[a-zA-Z]{2})$",0,url,typeof(string)),".")[1])
+| summarize count() by TLD

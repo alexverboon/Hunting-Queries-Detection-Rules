@@ -1,0 +1,45 @@
+# TITLE
+
+## Query Information
+
+### MITRE ATT&CK Technique(s)
+
+| Technique ID | Title    | Link    |
+| ---  | --- | --- |
+| T1110.003 | Credential Access: Brute Force: Password Spraying | https://attack.mitre.org/techniques/T1110/003/ |
+
+### Description
+
+DESCRIPTION
+
+
+#### References
+
+
+
+### Microsoft 365 Defender
+
+
+
+
+```kql
+CloudAppEvents
+| extend LastSeen = parse_json(LastSeenForUser)
+| extend Uncommon = parse_json(UncommonForUser)
+// LastSeen
+| extend LastSeen_ActionType = toint(LastSeen.ActionType)
+| extend LastSeen_ISP = toint(LastSeen.ISP)
+| extend LastSeen_IPAddress = toint(LastSeen.IPAddress)
+| extend LastSeen_Application = toint(LastSeen.Application)
+| extend LastSeen_OSPlatform = toint(LastSeen.OSPlatform)
+| extend LastSeen_CountryCode = toint(LastSeen.CountryCode)
+| extend LastSeen_UserAgent = toint(LastSeen.UserAgent)
+| extend LastSeen_Site = toint(LastSeen.Site)
+| extend Totallastseen = LastSeen_ActionType + LastSeen_ISP + LastSeen_IPAddress + LastSeen_Application + LastSeen_OSPlatform + LastSeen_CountryCode + LastSeen_UserAgent + LastSeen_Site
+| where Totallastseen > 0
+| project Timestamp, ActionType, LastSeen_ActionType, LastSeen_Application, LastSeen_CountryCode, LastSeen_IPAddress, LastSeen_ISP, LastSeen_OSPlatform, LastSeen_Site
+
+
+
+```
+

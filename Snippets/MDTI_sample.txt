@@ -1,0 +1,24 @@
+
+
+let mdti_ip = (ThreatIntelligenceIndicator
+| extend Source = SourceSystem
+| where Source == "Microsoft Defender Threat Intelligence"
+| where isnotempty( NetworkSourceIP)
+| take 5);
+let mdti_url = (ThreatIntelligenceIndicator
+| extend Source = SourceSystem
+| where Source == "Microsoft Defender Threat Intelligence"
+| where isnotempty(Url)
+| take 5);
+let mdti_malware = (ThreatIntelligenceIndicator
+| extend Source = SourceSystem
+| where Source == "Microsoft Defender Threat Intelligence"
+| where isnotempty( FileHashValue)
+| where FileHashType == "SHA256"
+| take 5);
+let mdti_domain = (ThreatIntelligenceIndicator
+| extend Source = SourceSystem
+| where Source == "Microsoft Defender Threat Intelligence"
+| where isnotempty( DomainName)
+| take 5);
+union isfuzzy=true mdti_ip, mdti_url,mdti_malware,mdti_domainmalware
