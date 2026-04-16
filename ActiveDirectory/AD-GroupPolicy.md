@@ -1,5 +1,8 @@
 # Active Directory - Group Policy Objects (WORK IN PROGRESS)
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Work in Progress](https://img.shields.io/badge/status-work--in--progress-yellow.svg)
+
 ## Query Information
 
 ### Description

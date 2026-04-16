@@ -1,5 +1,7 @@
 # Active Directory - Computer Object - Operating System Name changes
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### Description

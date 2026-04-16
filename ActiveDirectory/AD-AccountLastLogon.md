@@ -1,5 +1,7 @@
 # Active Directory - User last logon
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### MITRE ATT&CK Technique(s)

@@ -1,5 +1,7 @@
 # Active Directory - Extract Account OU
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### Description

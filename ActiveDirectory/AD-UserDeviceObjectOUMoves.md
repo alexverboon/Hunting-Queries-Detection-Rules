@@ -1,5 +1,7 @@
 # Active Directory - User or Device object OU moves
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### Description

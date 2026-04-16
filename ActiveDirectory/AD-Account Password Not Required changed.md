@@ -1,5 +1,7 @@
 # Active Directory - Account Password Not Required changed
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+
 ## Query Information
 
 ### Description
