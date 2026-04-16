@@ -4,13 +4,15 @@
 
 ### Description
 
-The query below detects Defender for Identity logins which involves a sensitive user account.
+The query below detects Defender for Identity logins which involves a sensitive user account. 
 
 #### References
 
-- [Leveraging the convergence of Microsoft Defender for Identity in Microsoft 365 Defender Portal](https://techcommunity.microsoft.com/t5/microsoft-365-defender-blog/leveraging-the-convergence-of-microsoft-defender-for-identity-in/ba-p/3856321)
+- [Leveraging the convergence of Microsoft Defender for Identity in Microsoft 365 Defender Portal
+](https://techcommunity.microsoft.com/t5/microsoft-365-defender-blog/leveraging-the-convergence-of-microsoft-defender-for-identity-in/ba-p/3856321)
 
 ### Microsoft 365 Defender
+
 
 ```kql
 //Detect all sensitive logins
@@ -23,3 +25,4 @@ IdentityInfo
 ) on $left.AccountSid == $right.OnPremSid
 | summarize SensitiveLogins = count(LogonType) by AccountDisplayName1, DeviceName
 ```
+

@@ -1,9 +1,0 @@
-SecurityIncident
-| where TimeGenerated > ago(30d)
-| summarize arg_max(TimeGenerated,*) by IncidentNumber
-| where Severity has_any ("Informational","Low")
-| project TimeGenerated, IncidentNumber, IncidentName, Title, Severity, Classification, ClassificationComment, ClassificationReason, Comments
-// incidents per day
-| summarize count() by bin(TimeGenerated,1d), Severity
-| evaluate pivot(Severity)
-| render timechart 

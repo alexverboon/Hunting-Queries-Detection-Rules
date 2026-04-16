@@ -34,25 +34,9 @@ wmic  process call create "powershell -NoProfile -EncodedCommand VwByAGkAdABlAC0
 ```kql
 DeviceProcessEvents
 | where FileName == @"WMIC.exe"
-| where ProcessCommandLine has_any ("EncodedCommand","Enc","ec")
+| where ProcessCommandLine has_any ("EncodedCommand","Enc")
 | project Timestamp, DeviceName, InitiatingProcessFileName,ActionType, AccountName, ProcessCommandLine
-| extend Encoded = extract(@'(?i)[\-–—―](?:EncodedCommand|enc|ec)\s+([A-Za-z0-9+/=]+)', 1, ProcessCommandLine)
+| extend Encoded = extract(@"-(?:EncodedCommand|enc)\s+([A-Za-z0-9+/=]+)", 1, ProcessCommandLine)
 | where isnotempty(Encoded)
 | extend Decoded = base64_decode_tostring(Encoded) 
-```
-
-```kql
-union DeviceProcessEvents, DeviceCustomProcessEvents
-| where FileName == @"WMIC.exe"
-| where ProcessCommandLine has_any ("EncodedCommand","Enc","ec")
-| project Timestamp, DeviceName, InitiatingProcessFileName,ActionType, AccountName, ProcessCommandLine
-| extend Encoded = extract(@'(?i)[\-–—―](?:EncodedCommand|enc|ec)\s+([A-Za-z0-9+/=]+)', 1, ProcessCommandLine)
-| where isnotempty(Encoded)
-| extend Decoded = base64_decode_tostring(Encoded) 
-| project Timestamp,DeviceName, InitiatingProcessFileName,ActionType, AccountName, ProcessCommandLine, Decoded, Type, _TimeReceived, ingestion_time()
-| extend 
-    Delay_EventToReceived   = round((_TimeReceived - Timestamp) / 1m, 0),
-    Delay_ReceivedToIngest  = round((ingestion_time() - _TimeReceived) / 1m, 0),
-    Delay_EventToIngest     = round((ingestion_time() - Timestamp) / 1m, 0)
-| sort by Timestamp desc  
 ```

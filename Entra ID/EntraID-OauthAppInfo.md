@@ -59,34 +59,3 @@ OAuthAppInfo
 | project AppName, VerifiedPublisher, ServicePrincipalId, OAuthAppId, PrivilegeLevel, Permissions, AppOrigin, AppOwnerTenantId
 | extend VerifiedPublisher_displayName = tostring(parse_json(VerifiedPublisher)["displayName"])
 ```
-
-External Tenant IDs
-
-```kql
-let externalapptenantids = OAuthAppInfo 
-| where isnotempty( AppOwnerTenantId)
-| where AppOrigin == 'External'
-| summarize arg_max(TimeGenerated,*) by OAuthAppId
-| extend VerifiedPublisher_displayName = tostring(parse_json(VerifiedPublisher)["displayName"])
-| distinct AppOwnerTenantId;
-externalapptenantids
-```
-
-work in progress....
-
-```kql
-let externalapptenantids = OAuthAppInfo 
-| where isnotempty( AppOwnerTenantId)
-| where AppOrigin == 'External'
-| summarize arg_max(TimeGenerated,*) by OAuthAppId
-| extend VerifiedPublisher_displayName = tostring(parse_json(VerifiedPublisher)["displayName"])
-| distinct ServicePrincipalId;
-MicrosoftGraphActivityLogs
-| where ServicePrincipalId has_any (externalapptenantids)
-| distinct AppId, ServicePrincipalId, RequestMethod, RequestUri, IPAddress, Location
-| join kind=leftouter  ( OAuthAppInfo 
-| where isnotempty( AppOwnerTenantId)
-| where AppOrigin == 'External'
-| summarize arg_max(TimeGenerated,*) by OAuthAppId)
-on $left. AppId == $right. OAuthAppId
-```

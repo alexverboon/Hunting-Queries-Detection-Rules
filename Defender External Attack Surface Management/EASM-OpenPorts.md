@@ -19,16 +19,11 @@ EasmIpAddressAsset_CL
 | mv-expand parse_json(Ports_s)
 | extend Components = parse_json(WebComponents_s)
 | extend LastPortState = tostring(Ports_s.LastPortState)
-| extend Port = tostring(Ports_s.Port)
-| extend PortStateFirstSeen = todatetime(Ports_s.PortStateFirstSeen)
-| extend PortStateLastSeen = todatetime(Ports_s.PortStateLastSeen)
-| where LastPortState == 'OPEN' 
-| mv-expand Components
-| extend Category = tostring(Components.Category)
-| extend Name = tostring(Components.Name)
-| project TimeGenerated, IPAddress, Port, LastPortState,PortStateLastSeen,PortStateFirstSeen, Category, Name
-| summarize Categories = make_set(Category), Names = make_set(Name) by IPAddress , Port//, PortStateFirstSeen, PortStateLastSeen
-| sort by IPAddress, Port
+| extend Port_ = tostring(Ports_s.Port)
+| extend PortStateFirstSeen = tostring(Ports_s.PortStateFirstSeen)
+| extend PortStateLastSeen = tostring(Ports_s.PortStateLastSeen)
+| project TimeGenerated, IPAddress, Port_, LastPortState,PortStateLastSeen , PortStateFirstSeen, Components 
+| where LastPortState == 'OPEN'
 ```
 
  Telnet Service Exposure
@@ -59,50 +54,4 @@ EasmRisk_CL
 | where MetricDisplayName_s == "ASI: Telnet Service Exposure"
 | extend Rule = tostring(parse_json(AssetDiscoveryAuditTrail_s)[0].Rule)
 | project TimeGenerated, AssetType_s, AssetName_s,IPAddress, CategoryName_s, Rule, MetricDisplayName_s, AssetLastSeen_t
-```
-
-testing differences
-
-``` kql 
-// Define the time ranges
-let startTime1 = now()-90d;
-let endTime1 = now()-8d;
-let startTime2 = now()-7d;
-let endTime2 = now();
-let olderdata = EasmIpAddressAsset_CL
-| where TimeGenerated between (startTime1 .. endTime1)
-| summarize arg_max(TimeGenerated,*) by IPAddress
-| mv-expand parse_json(Ports_s)
-| extend Components = parse_json(WebComponents_s)
-| extend LastPortState = tostring(Ports_s.LastPortState)
-| extend Port = tostring(Ports_s.Port)
-| extend PortStateFirstSeen = todatetime(Ports_s.PortStateFirstSeen)
-| extend PortStateLastSeen = todatetime(Ports_s.PortStateLastSeen)
-| where LastPortState == 'OPEN' 
-| mv-expand Components
-| extend Category = tostring(Components.Category)
-| extend Name = tostring(Components.Name)
-| project TimeGenerated, IPAddress, Port, LastPortState,PortStateLastSeen,PortStateFirstSeen, Category, Name
-| summarize Categories = make_set(Category), Names = make_set(Name) by IPAddress , Port, PortStateFirstSeen, PortStateLastSeen
-//| where PortStateFirstSeen > ago(7d)
-| sort by IPAddress, Port;
-let newerdata = EasmIpAddressAsset_CL
-| where ingestion_time() between (startTime2 .. endTime2)
-| summarize arg_max(TimeGenerated,*) by IPAddress
-| mv-expand parse_json(Ports_s)
-| extend Components = parse_json(WebComponents_s)
-| extend LastPortState = tostring(Ports_s.LastPortState)
-| extend Port = tostring(Ports_s.Port)
-| extend PortStateFirstSeen = todatetime(Ports_s.PortStateFirstSeen)
-| extend PortStateLastSeen = todatetime(Ports_s.PortStateLastSeen)
-| where LastPortState == 'OPEN' 
-| mv-expand Components
-| extend Category = tostring(Components.Category)
-| extend Name = tostring(Components.Name)
-| project TimeGenerated, IPAddress, Port, LastPortState,PortStateLastSeen,PortStateFirstSeen, Category, Name
-| summarize Categories = make_set(Category), Names = make_set(Name) by IPAddress , Port, PortStateFirstSeen, PortStateLastSeen
-| sort by IPAddress, Port;
-olderdata
-| join kind=innerunique (newerdata)
-on $left. IPAddress == $right. IPAddress
 ```

@@ -70,11 +70,3 @@ DeviceProcessEvents
     InitiatingProcessFileName
 | order by TimeGenerated desc
 ```
-
-```kql
-| extend B64 = extract(@"\""([A-Za-z0-9+/=]{40,})\""(\s|$)", 1, InitiatingProcessCommandLine)
-| where isnotempty(B64)
-| extend DecodedText = base64_decode_tostring(B64)
-| extend J = parse_json(DecodedText)
-| extend  OrgId = tostring(J.OrgId)
-```

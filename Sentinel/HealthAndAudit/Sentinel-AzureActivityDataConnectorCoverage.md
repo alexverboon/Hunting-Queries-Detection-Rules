@@ -21,36 +21,10 @@ arg("").resourcecontainers
 | distinct subscriptionId, name;
 allsubscriptions
 | join kind=leftouter  (AzureActivity
-| extend AzureActivitySubscriptionId = SubscriptionId
-| distinct AzureActivitySubscriptionId)
-on $left. subscriptionId == $right.AzureActivitySubscriptionId
-| extend IsMonitored = iff(isempty(AzureActivitySubscriptionId),"No","Yes")
-| project subscriptionId, name, AzureActivitySubscriptionId, IsMonitored
+| extend AzureActivitySyubscriptionId = SubscriptionId
+| distinct AzureActivitySyubscriptionId)
+on $left. subscriptionId == $right.AzureActivitySyubscriptionId
+| extend IsMonitored = iff(isempty(AzureActivitySyubscriptionId),"No","Yes")
+| project subscriptionId, name, AzureActivitySyubscriptionId, IsMonitored
 ```
 
-### Azure Resource Graph
-
-```kql
-policyResources
-| where type == "microsoft.authorization/policyassignments"
-| project name, id, type, properties.displayName, properties.scope, properties.policyDefinitionId, properties.enforcementMode
-| where properties_displayName == 'Configure Azure Activity logs to stream to specified Log Analytics workspace'
-| project name, properties_displayName, properties_scope
-```
-
-
-
-AzureActivity
-    | extend SubscriptionId = tostring(SubscriptionId)
-    | distinct SubscriptionId
-| join (ExposureGraphNodes
-    | where NodeLabel == "subscriptions"
-    | extend Parsed = parse_json(NodeProperties)
-    | extend
-        SubscriptionId = tostring(Parsed.rawData.hierarchyIdentifier),
-        SubscriptionName = tostring(Parsed.rawData.subscriptionName),
-        EnvironmentName = tostring(Parsed.rawData.environmentName)
-    | project EnvironmentName, SubscriptionId, SubscriptionName) on SubscriptionId
-| extend IsMonitored = iff(isempty(SubscriptionId1), "No", "Yes")
-| project SubscriptionId, SubscriptionName, EnvironmentName, IsMonitored
-| order by SubscriptionName asc
