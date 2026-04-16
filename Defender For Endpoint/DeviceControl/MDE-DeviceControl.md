@@ -1,5 +1,8 @@
 # Defender for Endpoint - Device Control
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+
 ## Query Information
 
 ### Description
@@ -15,8 +18,7 @@ Use the below queries to get Defender for Endpoint - Device Control related even
 
 Source: Microsoft documentation
 
-
-### Microsoft 365 Defender
+### Microsoft Defender XDR
 
 Events triggered by Device Installation policies
 

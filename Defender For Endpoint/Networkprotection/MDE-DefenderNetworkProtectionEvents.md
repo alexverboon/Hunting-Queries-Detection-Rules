@@ -1,4 +1,7 @@
-# Network Protection
+# Defender for Endpoint - Network Protection
+
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
 
 ## Query Information
 
@@ -10,7 +13,7 @@ Use the below queries to retrieve network protection events
 
 - [Protect your network](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
 
-### Microsoft 365 Defender
+### Microsoft  Defender XDR
 
 ```kql
 DeviceEvents 

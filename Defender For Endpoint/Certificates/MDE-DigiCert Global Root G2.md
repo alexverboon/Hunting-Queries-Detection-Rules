@@ -1,7 +1,7 @@
 # Microsoft Defender for Endpoint - Certificates - DigiCert Global Root G2
 
 ![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
-![Status: Testing](https://img.shields.io/badge/status-testing-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
 
 ## Query Information
 

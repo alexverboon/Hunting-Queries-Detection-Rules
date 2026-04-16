@@ -1,4 +1,7 @@
-# Smart Screen Events
+# Defender for Endpoint - Smart Screen Events
+
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
 
 ## Query Information
 
@@ -11,7 +14,7 @@ Use the following queries to find Windows Defender SmartScreen events.
 - [Protect your network](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/network-protection?view=o365-worldwide)
 - [Microsoft Defender SmartScreen](https://learn.microsoft.com/de-de/windows/security/operating-system-security/virus-and-threat-protection/microsoft-defender-smartscreen/)
 
-### Microsoft 365 Defender
+### Microsoft  Defender XDR
 
 A user has overridden a SmartScreen warning and continued to open an untrusted app or a low-reputation URL.
 

@@ -1,5 +1,8 @@
 # Defender for Endpoint -  Windows Firewall configuration
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+
 ## Query Information
 
 ### MITRE ATT&CK Technique(s)
@@ -17,7 +20,7 @@ Use the below queries to identify disabling or modifying Windows Defender Firewa
 - [Impair Defenses: Disable or Modify System Firewall](https://attack.mitre.org/techniques/T1562/004/)
 - [Atomic Red Team - Impair Defenses: Disable or Modify System Firewall](https://atomicredteam.io/defense-evasion/T1562.004/)
 
-### Microsoft 365 Defender
+### Microsoft  Defender XDR
 
 Use of netsh to disable firewall profiles
 

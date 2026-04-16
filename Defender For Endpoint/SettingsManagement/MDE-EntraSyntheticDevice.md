@@ -1,5 +1,8 @@
 # Microsoft Defender for Endpoint - Security Settings Management - Entra ID Synthetic Device actions
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+
 ## Query Information
 
 ### Description
@@ -8,7 +11,7 @@ Use the below queries to find events related to MDE Security Settings management
 
 #### References
 
-### Sentinel
+### Microsoft Defender XDR
 
 The below query shows when MDE signals Intune after onbarding/offbaording MDE to create/delete a synthetic device object in Entra ID
 

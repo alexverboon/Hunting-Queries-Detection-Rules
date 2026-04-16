@@ -1,5 +1,8 @@
 # Microsoft Defender for Endpoint - Enterprise IOT Exposure
 
+![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
+![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+
 ## Query Information
 
 ### Description
@@ -11,7 +14,7 @@ Use the below queries to retreive the expore level information for MDE discovere
 - [Get started with enterprise IoT monitoring in Microsoft 365 Defender](https://learn.microsoft.com/en-us/azure/defender-for-iot/organizations/eiot-defender-for-endpoint)
 
 
-### Microsoft Sentinel
+### Microsoft Defender XDR
 
 Count of devices by exposure level
 
