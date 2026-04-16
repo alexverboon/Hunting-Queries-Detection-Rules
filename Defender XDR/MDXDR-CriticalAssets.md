@@ -14,7 +14,6 @@ The below queries retrieve Defender XDR Critical Asset Information.
 - [Overview of critical asset management](https://learn.microsoft.com/en-us/security-exposure-management/critical-asset-management)
 - [Critical assets protection in Microsoft Defender for Cloud](https://learn.microsoft.com/en-us/azure/defender-for-cloud/critical-assets-protection)
 
-
 ### Author
 
 - **Alex Verboon**
