@@ -22,7 +22,6 @@ Only agents built with Agent Builder are governed by sharing control.
 - [Agent settings in Microsoft 365 admin center](https://learn.microsoft.com/en-us/microsoft-365/admin/manage/agent-settings?view=o365-worldwide)
 
 ### Author
-
 - **Alex Verboon**
 
 ## Defender XDR
@@ -52,8 +51,7 @@ CloudAppEvents
 )
 | project TimeGenerated, UserAccessSetting, Configuration,ConfigurationState, ForAllUsers, AddedIdentities, RemovedIdentities, OriginalValue, NewValue, AccountDisplayName
 | sort by TimeGenerated
-```kql
-
+```
 
 Query with enriched added and removed user entities
 
