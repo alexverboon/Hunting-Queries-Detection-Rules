@@ -3,7 +3,6 @@
 ![KQL](https://img.shields.io/badge/language-KQL-blue.svg)
 ![Status: Testing](https://img.shields.io/badge/status-testing-blue.svg)
 
-
 ## Query Information
 
 ### MITRE ATT&CK Technique(s)
