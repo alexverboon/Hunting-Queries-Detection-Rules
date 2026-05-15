@@ -21,6 +21,7 @@ This query retrieves Microsoft Defender for AI agent protection events related t
 #### References
 
 - [Detect, block, and investigate threats to AI agents using Microsoft Defender (Preview)](https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/ai-agent-detection-protection)
+- [Real-time protection during agent runtime](https://derkvanderwoude.medium.com/real-time-protection-for-ai-agents-a335274b640c)
 
 ### Author
 
