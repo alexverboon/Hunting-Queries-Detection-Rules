@@ -36,6 +36,7 @@ CloudAppEvents
     Entries = take_anyif(ParamValue, ParamName == "Entries"),
     ListType = take_anyif(ParamValue, ParamName == "ListType"),
     Block = take_anyif(ParamValue, ParamName == "Block"),
+    Allow = take_anyif(ParamValue, ParamName == "Allow"),
     Notes = take_anyif(ParamValue, ParamName == "Notes"),
     ExpirationDate = take_anyif(ParamValue, ParamName == "ExpirationDate")
     by Timestamp, ActionType, AccountDisplayName
