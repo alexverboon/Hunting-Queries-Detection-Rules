@@ -28,24 +28,17 @@ CloudAppEvents
     "Set-TenantAllowBlockListItems"
 )
 | extend Data = parse_json(RawEventData)
-| extend Parameters = Data.Parameters
-| mv-expand Parameters
+| mv-expand Parameter = Data.Parameters
 | extend 
-    Name = tostring(Parameters.Name),
-    Value = tostring(Parameters.Value)
+    ParamName = tostring(Parameter.Name),
+    ParamValue = tostring(Parameter.Value)
 | summarize 
-    Details = make_bag(pack(Name, Value))
+    Entries = take_anyif(ParamValue, ParamName == "Entries"),
+    ListType = take_anyif(ParamValue, ParamName == "ListType"),
+    Block = take_anyif(ParamValue, ParamName == "Block"),
+    Notes = take_anyif(ParamValue, ParamName == "Notes"),
+    ExpirationDate = take_anyif(ParamValue, ParamName == "ExpirationDate")
     by Timestamp, ActionType, AccountDisplayName
-| evaluate bag_unpack(Details)
-| project
-    Timestamp,
-    ActionType,
-    AccountDisplayName,
-    Entries,
-    ListType,
-    Block,
-    Notes,
-    ExpirationDate
 | order by Timestamp desc
 ```
 
