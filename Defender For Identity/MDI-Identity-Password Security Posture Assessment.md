@@ -57,13 +57,15 @@ let IdInfo = IdentityInfo
 | extend PasswordNeverExpires = array_index_of(UserAccountControl, "PasswordNeverExpires")   != -1,
          PasswordNotRequired = array_index_of(UserAccountControl, "PasswordNotRequired")   != -1
 | extend OUPath = extract(@"CN=[^,]+,(.*)", 1, DistinguishedName)
-| project IdentityId,AccountName, AccountDomain, AccountDisplayName, OnPremSid, OnPremObjectId, AccountUpn, PasswordNeverExpires, PasswordNotRequired,Type, OUPath;
+| project IdentityId,AccountName, AccountDomain, AccountDisplayName, OnPremSid, OnPremObjectId, AccountUpn, PasswordNeverExpires, PasswordNotRequired,Type, OUPath, IdentityEnvironment;
 IdInfo
 | join kind=leftouter (accountinfo)
 on $left. IdentityId == $right. IdentityId
-| project IdentityId, AccountName, AccountStatus,AccountDomain, AccountDisplayName,AccountUpn,Sensitive,SensitiveLabel,LastPasswordChangeTime, DaysSinceLastPasswordChange, YearsSinceLastPasswordChange, PasswordNeverExpires, PasswordNotRequired,Type, OUPath
+| project IdentityId, AccountName, AccountStatus,AccountDomain, AccountDisplayName,AccountUpn,Sensitive,SensitiveLabel,LastPasswordChangeTime, DaysSinceLastPasswordChange, YearsSinceLastPasswordChange, PasswordNeverExpires, PasswordNotRequired,Type, OUPath, IdentityEnvironment
 | sort by DaysSinceLastPasswordChange desc 
-| where AccountStatus != @"Disabled"
+//| where AccountStatus != @"Disabled"
+| where Type == @"ServiceAccount"
+| where IdentityEnvironment != "Cloud"
 ```
 
 Visualize the result in Year buckets (add the kql below to the above query)
