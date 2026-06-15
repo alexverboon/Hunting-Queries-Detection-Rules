@@ -9,7 +9,13 @@
 
 These KQL queries inventory local AI agents detected by Microsoft Defender for Endpoint using the `AgentsInfo` table. The queries surface which devices have local AI agents installed and, conversely, which AI agents are present across how many devices, helping identify the spread and distribution of local AI agent deployments in your environment.
 
+
+    ***Preview** The AgentsInfo table in advanced hunting is now available in preview. The AIAgentsInfo table is transitioning to this new table, which provides a unified schema that supports agent inventory and governance for all agent types, including Copilot Studio, Microsoft Foundry, Microsoft 365 Copilot, third-party, and endpoint-discovered agents.
+
 #### References
+
+- [What's new in Microsoft Defender XDR](https://learn.microsoft.com/en-us/defender-xdr/whats-new)
+- [Discover local AI agents with Microsoft Defender for Endpoint (Preview)](https://learn.microsoft.com/en-us/defender-endpoint/discover-local-ai-agents)
 
 ### Author
 
