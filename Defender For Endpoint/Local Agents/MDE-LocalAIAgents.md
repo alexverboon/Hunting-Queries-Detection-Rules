@@ -45,3 +45,20 @@ AgentsInfo
 | summarize Devices = make_set(DeviceName), TotalDevices = dcount(DeviceName,4) by Name
 | project Agent=Name, TotalDevices, Devices
 ```
+
+MCP Servers
+
+```kql
+AgentsInfo
+| where Platform == @"LocalAgents"
+| extend AgentInfo = parse_json(RawAgentInfo).localAgentMetadata
+| where isnotempty( AgentInfo)
+| extend DeviceName = tostring(AgentInfo.deviceName)
+| where isnotempty( column_ifexists("McpServers",""))
+| mv-expand McpServers
+| extend MCP_Name = tostring( McpServers.name)
+| extend MCP_Type = tostring(McpServers.type)
+| extend MCP_Endpoint = tostring(McpServers.endpoint)
+| project MCP_Name, MCP_Type, MCP_Endpoint, Name, DeviceName
+| summarize Devices = make_set(DeviceName), TotalDevices = dcount(DeviceName,4) by MCP_Name, MCP_Type, MCP_Endpoint
+```
