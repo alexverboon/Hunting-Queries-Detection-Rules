@@ -10,10 +10,7 @@ author:
   name: "Alex Verboon"
   link: "https://github.com/alexverboon"
 references: ["https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview", "https://learn.microsoft.com/en-us/entra/identity/devices/howto-manage-local-admin-passwords", "https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-audit-logs", "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-devicelogonevents-table", "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceinfo-table", "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-management-event-log"]
-mitre:
-    - id: "T1078.003"
-        name: "Valid Accounts: Local Accounts"
-        url: "https://attack.mitre.org/techniques/T1078/003/"
+mitre: [{ id: "T1078.003", name: "Valid Accounts: Local Accounts", url: "https://attack.mitre.org/techniques/T1078/003/" }]
 mitreAtlas: []
 dataSources: [{ table: "AuditLogs", solution: "Microsoft Entra ID" }, { table: "DeviceLogonEvents", solution: "Microsoft Defender XDR" }, { table: "DeviceInfo", solution: "Microsoft Defender XDR" }]
 version: "3.0"
