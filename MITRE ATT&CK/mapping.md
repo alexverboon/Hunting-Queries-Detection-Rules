@@ -8,17 +8,22 @@ This section only includes references to queries that can be mapped in the MITRE
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1078.004 | Valid Accounts: Cloud Accounts | [Entra ID - Shared Mailbox Account Sign-in Block Audit](../Entra%20ID/EntraID-SharedMailboxAccounts.md) |
 
 ## Execution
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [Scheduled Task Creation Details](../Defender%20For%20Endpoint/MDE-ScheduledTaskCreated.md) |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [MDE - Scheduled Task Execution](../Defender%20For%20Endpoint/SchedultedTasks/MDE-SchedultedTasks.md) |
 | T1546.003 | Windows Management Instrumentation Event Subscription |[WMI Event Subscriptions](../Defender%20For%20Endpoint/MDE-WMIEventSubscription.md) |
 
 ## Persistence
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [Scheduled Task Creation Details](../Defender%20For%20Endpoint/MDE-ScheduledTaskCreated.md) |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [MDE - Scheduled Task Execution](../Defender%20For%20Endpoint/SchedultedTasks/MDE-SchedultedTasks.md) |
 | T1136.001 |  Create Account: Local Account | [Create Local Account](../Defender%20For%20Endpoint/MDE-LocalAccountCreated.md)  |
 | T1136.001 |  Create Account: Local Account | [Create Local Account](../Defender%20For%20Endpoint/MDE-WindowsBuiltInGroupMemberChanges.md)  |
 
@@ -26,6 +31,12 @@ This section only includes references to queries that can be mapped in the MITRE
 
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [Scheduled Task Creation Details](../Defender%20For%20Endpoint/MDE-ScheduledTaskCreated.md) |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | [MDE - Scheduled Task Execution](../Defender%20For%20Endpoint/SchedultedTasks/MDE-SchedultedTasks.md) |
+| T1484 | Domain Policy Modification | [Domain Policy Modification](../Defender%20For%20Identity/MDI-AD-GroupPolicy-PasswordPolicy.md) |
+| 1484.001 | Group Policy Modification | [Group Policy Modification](../Defender%20For%20Identity/MDI-AD-GroupPolicy-PasswordPolicy.md) |
+| T1078.003 | Valid Accounts: Local Accounts | [Windows LAPS Password Recovery and Administrator Logon Auditing](../Windows%20LAPS/WLAPS-PasswordRecovery-AdminLogonAudit.md) |
+
 
 ## Defense Evasion
 
@@ -48,6 +59,7 @@ This section only includes references to queries that can be mapped in the MITRE
 | Technique ID | Title    | Query    |
 | ---  | --- | --- |
 | T1087.002 | Account Discovery - Domain Account | [Honey Token Accounts](../Defender%20For%20Identity/MDI-Honeytoken%20was%20queried%20via%20SAM-R.md) |
+| T1087.002 | Account Discovery: Domain Account | [Defender for Identity - LDAP Ping](../Defender%20For%20Identity/MDI-LDAPPing.md) |
 
 ## Lateral Movement
 
